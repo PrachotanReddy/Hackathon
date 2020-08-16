@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hackathon</title>
+  <!-- Halfmoon CSS -->
+  <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="./style/dashboardStyling.css">
+</head>
+
+<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-dm-shortcut-enabled="true"
+  data-sidebar-shortcut-enabled="true" data-set-preferred-theme-onload="true" onload="changeTab('welcome-toggle')">
+  <div class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom">
+    <nav class="navbar justify-content-between">
+      <div class="navbar-content">
+        <button id="toggle-sidebar-btn" class="btn btn-action" type="button" onclick="halfmoon.toggleSidebar()">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+
+        <a href="/" class="navbar-brand">
+          <img src="https://www.makeitactive.com/images/2018/02/28/google.png" alt="hackathon logo">
+          Hackathon
+        </a>
+        <span class="navbar-text text-monospace d-none d-md-inline">Department of Sewerage</span>
+        <ul class="navbar-nav d-none d-md-flex">
+          <li class="nav-item active">
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link">Home</a>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-content">
+        <form action="/logout?_method=DELETE" method="POST">
+          <button class="btn btn-primary" type="submit">Log Out</button>
+        </form>
+      </div>
+    </nav>
+    <div class="sidebar">
+      <div class="sidebar-menu">
+        <h5 class="sidebar-title">General</h5>
+        <div class="sidebar-divider"></div>
+        <a id="announcement-toggle" class="sidebar-link sidebar-link-with-icon" onclick="changeTab(this.id)">
+          <span class="sidebar-icon bg-transparent justify-content-start mr-0">
+            <i class="fas fa-scroll" aria-hidden="true"></i>
+          </span>
+          Announcements
+        </a>
+        <a id="welcome-toggle" class="sidebar-link sidebar-link-with-icon active" onclick="changeTab(this.id)">
+          <span class="sidebar-icon bg-transparent justify-content-start mr-0">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+          Welcome
+        </a>
+        <br />
+        <h5 class="sidebar-title">Links</h5>
+        <div class="sidebar-divider"></div>
+        <a id="teamconfirm-toggle" class="sidebar-link sidebar-link-with-icon" onclick="changeTab(this.id)">
+          <span class="sidebar-icon bg-primary text-white rounded-circle">
+            <i class="fas fa-users text-white" aria-hidden="true"></i>
+          </span>
+          Confirm Team
+        </a>
+        <a id="problem-toggle" class="sidebar-link sidebar-link-with-icon" onclick="changeTab(this.id)">
+          <span class="sidebar-icon bg-success text-dark rounded-circle">
+            <i class="fas fa-paragraph text-white" aria-hidden="true"></i>
+          </span>
+          Problem Statements
+        </a>
+        <a id="submission-toggle" class="sidebar-link sidebar-link-with-icon" onclick="changeTab(this.id)">
+          <span class="sidebar-icon bg-secondary text-dark rounded-circle">
+            <i class="fas fa-layer-group text-white" aria-hidden="true"></i>
+          </span>
+          Submissions
+        </a>
+        <a class="sidebar-link sidebar-link-with-icon" onclick="halfmoon.toggleDarkMode()">
+          <span class="sidebar-icon bg-very-dark text-dark rounded-circle">
+            <i class="fas fa-adjust text-white" aria-hidden="true"></i>
+          </span>
+          Dark Mode
+        </a>
+      </div>
+    </div>
+
+
+    <!-- Content wrapper -->
+    <div class="content-wrapper">
+      <div id="welcome" class="container displayCardInformation" style="height: 100%;width: 100%;">
+        <div class="card rounded">
+          <div class="text-right">
+            <h4 class="font-weight-bold">Points: <%= scoring %></h4>
+          </div>
+          <h1 class="card-title">Welcome
+            <% if (participation == 'team') { %>
+            <%= participation %>
+            <% } %>
+            <span class="font-weight-bold"><%= name %></span>
+          </h1>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit nam necessitatibus ad eaque ipsam, at unde
+            deserunt quia quo nisi, iusto animi suscipit, qui perspiciatis quisquam doloribus neque? Quod, similique.
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam nostrum animi vitae corporis,
+            dignissimos
+            nihil eum doloremque enim facilis, optio atque fugiat, est aspernatur nobis magnam nisi reiciendis
+            repudiandae autem. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, natus placeat?
+            Perspiciatis eaque ad minima aliquam libero sed rerum error, magnam consequatur maiores unde inventore
+            nemo
+            voluptatibus reiciendis rem voluptate.
+          </p>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <h4>Current round: 1</h4>
+            </div>
+          </div>
+          <% if(teamMembers[0].length > 0) { %>
+          <h4 class="m-0 p-0">Team Members</h4>
+          <div class="row">
+            <% for(let i=0; i<=teamMembers.length; i++) { %>
+            <div class="col-12 col-md-6 col-lg-4">
+              <h5><%= teamMembers[i] %></h5>
+            </div>
+            <% } %>
+          </div>
+          <% } %>
+          <% if(submission) { %>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <h4>Submission: completed</h4>
+            </div>
+          </div>
+          <% } else { %>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <h4>Submission: incomplete</h4>
+            </div>
+          </div>
+          <% } %>
+
+        </div>
+      </div>
+      <div id="announcement" class="container displayCardInformation" style="height: 100%;width: 100%;">
+        <div class="card rounded">
+          <h3>
+            <span class="font-weight-bold">Announcements</span>
+          </h3>
+          <div class="container" id="container-holder">
+
+          </div>
+        </div>
+      </div>
+      <div id="teamconfirm" class="container displayCardInformation" style="height: 100%;width: 100%;">
+        <div class="card rounded">
+          <h2 class="m-0 p-0">Confirm Team Members</h2>
+          <p>
+            <% if(participation != 'team') { %>
+            <p>You are participating solo. This tab is not meant for you</p>
+            <% } else { %>
+            <% if (teamMembers[0]) { %>
+            <div class="form-row row-eq-spacing-sm">
+              <div class="col-12 col-md-6">
+                <label for="Teammate1" class="required">Teammate 1</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate1" name="teammate1"
+                  <%="placeholder="%><%= teamMembers[0] %> required="required">
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="Teammate2" class="required">Teammate 2</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate2" name="teammate2"
+                  <%="placeholder="%><%= teamMembers[1] %>>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="Teammate3" class="required">Teammate 3</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate3" name="teammate3"
+                  <%="placeholder="%><%= teamMembers[2] %>>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="Teammate4" class="required">Teammate 4</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate2" name="teammate4"
+                  <%="placeholder="%><%= teamMembers[3] %>>
+              </div>
+            </div>
+            <div class="text-center">
+              <p class="text-danger">You have already confirmed your team</p>
+              <input class="btn btn-primary disabled" type="submit" value="Confirm">
+            </div>
+            <% } else { %> <form action="/updateTeamMembers" method="POST">
+              <div class="form-row row-eq-spacing-sm">
+                <div class="col-12 col-md-6">
+                  <label for="Teammate1" class="required">Teammate 1</label>
+                  <input type="text" class="form-control" id="Teammate1" placeholder="First Teammate" name="teammate1"
+                    required="required">
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="Teammate2" class="required">Teammate 2</label>
+                  <input type="text" class="form-control" id="Teammate2" placeholder="Second Teammate" name="teammate2">
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="Teammate3" class="required">Teammate 3</label>
+                  <input type="text" class="form-control" id="Teammate3" placeholder="Third Teammate" name="teammate3">
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="Teammate4" class="required">Teammate 4</label>
+                  <input type="text" class="form-control" id="Teammate2" placeholder="Fourth Teammate" name="teammate4">
+                </div>
+              </div>
+              <div class="text-center">
+                <!-- text-right = text-align: right -->
+                <input class="btn btn-primary" type="submit" value="Confirm">
+              </div>
+            </form>
+            <% } %>
+            <% } %>
+          </p>
+        </div>
+      </div>
+      <div id="problem" class="container displayCardInformation" style="width: 100%;">
+        <div class="card border-0">
+          <h3 class="w-full text-center">
+            <span class="font-weight-bold">Problem Statements</span>
+          </h3>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <h2 class="card-title font-weight-bold">
+                  Problem Statement 1
+                </h2>
+                <p class="text-muted">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
+                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
+                  dicta expedita suscipit!
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <h2 class="card-title font-weight-bold">
+                  Problem Statement 1
+                </h2>
+                <p class="text-muted">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
+                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
+                  dicta expedita suscipit!
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <h2 class="card-title font-weight-bold">
+                  Problem Statement 1
+                </h2>
+                <p class="text-muted">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
+                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
+                  dicta expedita suscipit!
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <h2 class="card-title font-weight-bold">
+                  Problem Statement 1
+                </h2>
+                <p class="text-muted">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
+                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
+                  dicta expedita suscipit!
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <h2 class="card-title font-weight-bold">
+                  Problem Statement 1
+                </h2>
+                <p class="text-muted">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
+                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
+                  dicta expedita suscipit!
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <h2 class="card-title font-weight-bold">
+                  Problem Statement 1
+                </h2>
+                <p class="text-muted">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
+                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
+                  dicta expedita suscipit!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="submission" class="container displayCardInformation" style="height: 100%;width: 100%;">
+        <div class="card rounded">
+          <h1 class="text-center">Submissions</h1>
+          <% if(problemStatement == "") { %>
+          <form action="/submissionRound_one" method="POST" class="form-inline w-400 mw-full mx-auto w-full">
+            <div class="form-row row-eq-spacing-sm w-full">
+              <div class="form-group w-full">
+                <div class="col-sm">
+                  <label for="required select-problem-statement">Problem Statement</label>
+                  <select class="form-control form-control-lg w-full" id="select-problem-statement" name="problemSelect"
+                    required>
+                    <option value="" selected="selected" disabled="disabled">Select a problem statement</option>
+                    <option value="statement1">Statement 1</option>
+                    <option value="statement2">Statement 2</option>
+                    <option value="statement3">Statement 3</option>
+                    <option value="statement4">Statement 4</option>
+                    <option value="statement5">Statement 5</option>
+                    <option value="statement6">Statement 6</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group w-full">
+                <div class="col-sm">
+                  <label class="required w-100" for="link">Link</label>
+                  <input type="url" class="form-control form-control-lg w-full" name="solutionLink"
+                    placeholder="Enter the link to your submission" id="link" required="required">
+                </div>
+              </div>
+              <div class="form-group mb-0">
+                <input type="submit" class="btn btn-primary mx-auto" value="Submit">
+              </div>
+            </div>
+          </form>
+          <%} else { %>
+          <div class="form-row row-eq-spacing-sm w-full">
+            <div class="form-group w-full">
+              <div class="col-sm">
+                <label for="required select-problem-statement">Problem Statement</label>
+                <select class="form-control form-control-lg w-full" disabled="disabled" id="select-problem-statement">
+                  <option value="" selected="selected"><%= problemStatement %>
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group w-full">
+              <div class="col-sm">
+                <label class="w-100" for="link">Link</label>
+                <input type="url" class="form-control form-control-lg w-full" disabled="disabled"
+                  <%="placeholder="%><%= submission %> id="link" required="required">
+              </div>
+            </div>
+            <div class="form-group mb-0 text-center w-full">
+              <h6 class="text-danger">You have already submitted</h6>
+              <button type="button" class="btn btn-primary disabled">Submit</button>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+    </div>
+
+
+    <nav class="navbar navbar-fixed-bottom justify-content-end">
+      <p>Copyright Hackathon</p>
+    </nav>
+  </div>
+  <!-- Halfmoon JS -->
+  <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  <script src="./scripts/dashboard.js"></script>
+</body>
+
+</html>
