@@ -32,14 +32,35 @@ initializePassport(
   })
 )
 
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  }
+  res.redirect('/login')
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect('/dashboard')
+  }
+  next()
+}
+
+
+// for admin login
 function checkAuth(req, res, next) {
   if (!req.session.user_id) {
-    console.log('Not logged in')
-    res.render('admin');
+    res.redirect('/adminLoginPage');
   } else {
-    console.log('Logged in')
     next();
   }
+}
+
+function checkNotAuth(req, res, next) {
+  if (req.session.key === process.env.ADMIN_SESSION) {
+    return res.redirect('/admindashboard')
+  }
+  next()
 }
 
 app.set('view engine', 'ejs')
@@ -136,10 +157,66 @@ app.post("/updateTeamMembers", checkAuthenticated, (req, res) => {
   })
 })
 
-app.get("/getNews", checkAuthenticated, async (req, res) => {
-  collectionAnnouncement.find().toArray(async (err, announcements) => {
-    let car = ["bugatti", "lotus", "chevorlet"]
+app.get("/getNews", checkAuthenticated, (req, res) => {
+  collectionAnnouncement.find().toArray((err, announcements) => {
     res.send(announcements)
+  })
+})
+
+app.post("/addAdminNews", checkAuth, (req, res) => {
+  collectionAnnouncement.insertOne({
+    announcementTitle: req.body.title,
+    dateText: req.body.date,
+    para: req.body.description
+  });
+  res.redirect('/admindashboard');
+
+})
+
+app.get("/deleteParticipant", checkAuth, (req, res) => {
+  var query = {
+    "email": req.query.user
+  };
+  collectionLogin.deleteOne(query, function (err, obj) {
+    if (err) {
+      res.send("error");
+    }
+    console.log("1 document deleted");
+    res.send("done")
+  });
+})
+
+app.get("/giveScores", checkAuth, (req, res) => {
+  collectionLogin.findOne({
+    'email': req.query.user
+  }, (err, doc) => {
+    let newScore = Number(doc.score) + Number(req.query.scoreadd);
+    let query = {
+      email: req.query.user
+    }
+    let newValues = {
+      $set: {
+        score: newScore
+      }
+    }
+    collectionLogin.updateOne(query, newValues, (err, res) => {
+      if (err) {
+        throw err
+      } else {
+        console.log("Added")
+      }
+    })
+  })
+})
+app.get("/getAdminNews", checkAuth, async (req, res) => {
+  collectionAnnouncement.find().toArray(async (err, announcements) => {
+    res.send(announcements)
+  })
+})
+
+app.get("/getAdminParticipants", checkAuth, (req, res) => {
+  collectionLogin.find().toArray(async (err, participants) => {
+    res.send(participants)
   })
 })
 
@@ -148,17 +225,22 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 app.get('/admindashboard', checkAuth, (req, res) => {
-  res.render('admindashboard')
+  collectionLogin.find().toArray(async (err, participants) => {
+    res.render('admindashboard', {
+      data: participants
+    })
+  })
 })
 
-app.get('/adminLoginPage', checkAuth, (req, res) => {
+app.get('/adminLoginPage', checkNotAuth, (req, res) => {
   res.render('admin')
 })
 
 app.post('/adminLoginPage', (req, res) => {
   var post = req.body;
-  if (post.email === 'john@keat' && post.password === 'johnspassword') {
-    req.session.user_id = '5ras223avbbas77fabskjbfa9';
+  if (post.email === process.env.ADMIN_ID && post.password === process.env.ADMIN_PASSWORD) {
+    req.session.user_id = process.env.ADMIN_SESSION;
+    req.session.key = process.env.ADMIN_SESSION;
     res.redirect('/admindashboard');
   } else {
     res.redirect('/adminLoginPage');
@@ -167,6 +249,7 @@ app.post('/adminLoginPage', (req, res) => {
 
 app.delete('/logoutadmin', checkAuth, function (req, res) {
   delete req.session.user_id;
+  delete req.session.key;
   res.redirect('/adminLoginPage');
 });
 
@@ -197,12 +280,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
             password: hashedPassword,
             teamName: req.body.name,
             participationMode: req.body.participation,
-            teamMembers: [
-              {0: ""},
-              {1: ""},
-              {2: ""},
-              {3: ""}
-            ],
+            teamMembers: [],
             problemStatement: '',
             score: 0,
             submission: ''
@@ -222,22 +300,8 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-  res.redirect('/login')
-}
-
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/dashboard')
-  }
-  next()
-}
-
 app.listen(port, () => {
-  console.log("server listening on port 3000");
+  console.log("server listening on port 4000");
   MongoClient.connect(
     CONNECTION_URL, {
       useNewUrlParser: true,

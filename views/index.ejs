@@ -99,7 +99,7 @@
             <% if (participation == 'team') { %>
             <%= participation %>
             <% } %>
-            <span class="font-weight-bold"><%= name %></span>
+            <span class="font-weight-bold text-secondary"><%= name %></span>
           </h1>
           <p>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit nam necessitatibus ad eaque ipsam, at unde
@@ -114,15 +114,15 @@
           </p>
           <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
-              <h4>Current round: 1</h4>
+              <h4>Current round: <span class="text-secondary">1</span></h4>
             </div>
           </div>
-          <% if(teamMembers[0].length > 0) { %>
+          <% if(teamMembers.length > 0) { %>
           <h4 class="m-0 p-0">Team Members</h4>
-          <div class="row">
+          <div class="row pb-0 mb-0">
             <% for(let i=0; i<=teamMembers.length; i++) { %>
-            <div class="col-12 col-md-6 col-lg-4">
-              <h5><%= teamMembers[i] %></h5>
+            <div class="col-12 col-md-6 col-lg-3">
+              <h5 class="text-secondary"><%= teamMembers[i] %></h5>
             </div>
             <% } %>
           </div>
@@ -130,35 +130,40 @@
           <% if(submission) { %>
           <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
-              <h4>Submission: completed</h4>
+              <h4>Submission: <span class="text-success">completed</span></h4>
             </div>
           </div>
           <% } else { %>
           <div class="row">
             <div class="col-12 col-md-6 col-lg-4">
-              <h4>Submission: incomplete</h4>
+              <h4>Submission: <span class="text-danger">incomplete</span></h4>
             </div>
           </div>
           <% } %>
 
         </div>
       </div>
-      <div id="announcement" class="container displayCardInformation" style="height: 100%;width: 100%;">
-        <div class="card rounded">
-          <h3>
-            <span class="font-weight-bold">Announcements</span>
-          </h3>
-          <div class="container" id="container-holder">
+      <div id="announcement" class="container announcementCard" style="height: 100%;width: 100%;">
+        <h3 class="text-center w-full m-0 p-0 mt-20 pt-20">
+          <span class="font-weight-bold">Announcements</span>
+        </h3>
+        <div class="container" id="container-holder">
 
-          </div>
         </div>
+
       </div>
       <div id="teamconfirm" class="container displayCardInformation" style="height: 100%;width: 100%;">
         <div class="card rounded">
           <h2 class="m-0 p-0">Confirm Team Members</h2>
           <p>
             <% if(participation != 'team') { %>
-            <p>You are participating solo. This tab is not meant for you</p>
+            <p>You are participating as
+              <% if(participation == 'individual') { %>
+              an Individual
+              <% } else if (participation == "business"){ %>
+              a Business
+              <% } %>
+              . This tab is not meant for you</p>
             <% } else { %>
             <% if (teamMembers[0]) { %>
             <div class="form-row row-eq-spacing-sm">

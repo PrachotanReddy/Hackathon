@@ -2,7 +2,6 @@ const destinations = ["announcement", "welcome", "teamconfirm", "problem", "subm
 
 function changeTab(id) {
     let redirectDestination = id.slice(0, -7);
-    console.log(id)
     document.getElementById("announcement-toggle").classList.remove("active");
     document.getElementById("welcome-toggle").classList.remove("active");
     document.getElementById("teamconfirm-toggle").classList.remove("active");

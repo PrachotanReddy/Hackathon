@@ -3,3 +3,9 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.announcementCard {
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
