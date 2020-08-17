@@ -197,7 +197,12 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
             password: hashedPassword,
             teamName: req.body.name,
             participationMode: req.body.participation,
-            teamMembers: [],
+            teamMembers: [
+              {0: ""},
+              {1: ""},
+              {2: ""},
+              {3: ""}
+            ],
             problemStatement: '',
             score: 0,
             submission: ''
