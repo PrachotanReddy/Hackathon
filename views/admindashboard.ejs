@@ -25,6 +25,12 @@
         .participant-card {
             box-shadow: 0 4px 8px 0px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
+
+        .page-wrapper {
+            background-image: url("./resources/adminlogin.jpg");
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
 
@@ -93,32 +99,34 @@
         <div class="content-wrapper">
             <div id="announcement" class="w-full pt-20">
                 <div class="container mx-auto pt-20">
-                    <h2 class="text-center">New Announcement</h2>
-                    <form action="/addAdminNews" method="POST" class="w-400 w-three-quarter mx-auto">
-                        <!-- Input -->
-                        <div class="form-group">
-                            <label for="news-title" class="required">Heading</label>
-                            <input type="text" class="form-control form-control-lg" id="news-title"
-                                placeholder="Heading of the announcement" required="required" name="title">
-                        </div>
-                        <!-- Input -->
-                        <div class="form-group">
-                            <label for="news-date" class="required">Date</label>
-                            <input type="text" class="form-control form-control-lg" id="news-date"
-                                placeholder="Date to be published as" required="required" name="date">
-                        </div>
-                        <!-- Textarea -->
-                        <div class="form-group">
-                            <label for="description" class="required">Description</label>
-                            <textarea class="form-control form-control-lg" id="description"
-                                placeholder="Write the announcement here" name="description"
-                                required="required"></textarea>
-                        </div>
-                        <!-- Submit button -->
-                        <div class="text-center">
-                            <input class="btn btn-lg btn-primary" type="submit" value="Confirm">
-                        </div>
-                    </form>
+                    <div class="card bg-dark rounded">
+                        <h2 class="text-center">New Announcement</h2>
+                        <form action="/addAdminNews" method="POST" class="w-400 w-three-quarter mx-auto">
+                            <!-- Input -->
+                            <div class="form-group">
+                                <label for="news-title" class="required">Heading</label>
+                                <input type="text" class="form-control form-control-lg" id="news-title"
+                                    placeholder="Heading of the announcement" required="required" name="title">
+                            </div>
+                            <!-- Input -->
+                            <div class="form-group">
+                                <label for="news-date" class="required">Date</label>
+                                <input type="text" class="form-control form-control-lg" id="news-date"
+                                    placeholder="Date to be published as" required="required" name="date">
+                            </div>
+                            <!-- Textarea -->
+                            <div class="form-group">
+                                <label for="description" class="required">Description</label>
+                                <textarea class="form-control form-control-lg" id="description"
+                                    placeholder="Write the announcement here" name="description"
+                                    required="required"></textarea>
+                            </div>
+                            <!-- Submit button -->
+                            <div class="text-center">
+                                <input class="btn btn-lg btn-primary" type="submit" value="Confirm">
+                            </div>
+                        </form>
+                    </div>
                     <div class="container-fluid pt-20">
                         <h3 class="text-center pt-20">Existing Announcements</h3>
                         <div id="announcement-holder">
@@ -136,7 +144,7 @@
 
                     <div class="content">
                         <% data.forEach((participant) => { %>
-                        <div class="card participant-card text-wrap">
+                        <div class="card participant-card text-wrap" id="<%= participant._id %>">
                             <h2 class="card-title">
                                 Team Name: <%= participant.teamName %>
                             </h2>
@@ -181,7 +189,6 @@
                                     <button class="btn btn-secondary" data-toggle="dropdown" type="button"
                                         id="dropdown-toggle-btn-1" aria-haspopup="true" aria-expanded="false">
                                         Disqualify
-                                        <!-- ml-5 = margin-left: 0.5rem (5px) -->
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-center"
                                         aria-labelledby="dropdown-toggle-btn-1">

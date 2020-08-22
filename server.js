@@ -10,7 +10,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const CONNECTION_URL = process.env.DATABASE_URL;
-let port = process.env.PORT || 4000;
+let port = process.env.PORT || 3000;
 const initializePassport = require('./auth-routes/passport-config');
 const {
   query
@@ -301,7 +301,7 @@ app.delete('/logout', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log("server listening on port 4000");
+  console.log("server listening on port 3000");
   MongoClient.connect(
     CONNECTION_URL, {
       useNewUrlParser: true,

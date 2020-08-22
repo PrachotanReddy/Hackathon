@@ -32,8 +32,7 @@ function deleteUserDetails(email) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="alert-heading">User Deleted</h4>
-                    The user ${email} was deleted. You may have to refresh the page to observe the changes
-                    </div>`
+                    <p>The user ${email} was deleted.</p></div>`
             } else {
                 alert("There was an error in deleting the user. Maybe try again?")
             }

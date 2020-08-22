@@ -9,32 +9,43 @@
     <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css" rel="stylesheet" />
     <!-- Halfmoon JS -->
     <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+    <style>
+        .page-wrapper {
+            background-image: url("./resources/adminlogin.jpg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="page-wrapper">
         <div class="content-wrapper d-flex flex-column justify-content-center">
-            <h1 class="text-center">Login</h1>
-            <form action="/adminLoginPage" method="POST" class="w-400 mw-full mx-auto">
-                <div class="form-group">
-                    <label for="email" class="required">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Email" name="email"
-                        required="required">
-                </div>
-                <div class="form-group">
-                    <label for="password" class="required">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" name="password"
-                        required="required">
-                </div>
-                <p class="text-danger text-center font-weight-semi-bold">
-                    <% if (messages.error) { %>
-                    <%= messages.error %>
-                    <% } %>
-                </p>
-                <div class="text-center">
-                    <input class="btn btn-primary" type="submit" value="Log in" style="width: 10rem;">
-                </div>
-            </form>
+            <div class="register-container card w-400 mx-auto text-white">
+                <h1 class="text-center text-white pb-0 mb-0">Admin</h1>
+                <h5 class="text-center text-white pt-0 mt-0">Login Portal</h5>
+                <form action="/adminLoginPage" method="POST" class="w-400 mw-full mx-auto">
+                    <div class="form-group">
+                        <label for="email" class="required">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email"
+                            required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="required">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password"
+                            required="required">
+                    </div>
+                    <div class="text-center">
+                        <input class="btn btn-primary" type="submit" value="Log in" style="width: 10rem;">
+                    </div>
+                    <p class="text-center">If you forgot the password, contact system administrator.</p>
+                </form>
+            </div>
         </div>
     </div>
 </body>
