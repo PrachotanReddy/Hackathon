@@ -6,37 +6,119 @@ const MongoClient = require("mongodb").MongoClient;
 const app = express()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
+const GitHubStrategy = require("passport-github2").Strategy;
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const CONNECTION_URL = process.env.DATABASE_URL;
 let port = process.env.PORT || 3000;
+
+//configuration for passport local
 const initializePassport = require('./auth-routes/passport-config');
-const {
-  query
-} = require('express');
-const {
-  ObjectID
-} = require('mongodb');
-initializePassport(
-  passport,
-  email => collectionLogin.findOne({
-    'email': email
-  }).then(function (docs) {
+initializePassport( passport, email => collectionLogin.findOne({ 'email': email }).then(function (docs) {
     return docs
-  }),
-  id => collectionLogin.findOne({
-    '_id': id
+  }), id => collectionLogin.findOne({ '_id': id
   }).then(function (docs) {
     return docs
   })
 )
 
+// configuration for passport google
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback",
+    passReqToCallback   : true
+  },
+  (request, accessToken, refreshToken, profile, done) => {
+    collectionLogin.findOne({ email: profile.email }).then(function (user) {
+      if(user) {
+        done(null, user);
+      }
+      else {
+            collectionLogin.insertOne({
+            email: profile.email,
+            password: "DoesNotApply",
+            teamName: "remaining-submission-oauth",
+            participationMode: "remaining-submission-oauth",
+            teamMembers: [],
+            problemStatement: '',
+            score: 0,
+            submission: '',
+            oAuthMethod: 'google'
+          });
+          done(null, user);
+      }
+    })
+      
+  })
+);
+
+// configuration for passport github
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+        collectionLogin.findOne({ email: profile.emails[0].value }).then(function (user) {
+      if(user) {
+        done(null, user);
+      }
+      else {
+            collectionLogin.insertOne({
+            email: profile.emails[0].value,
+            password: "DoesNotApply",
+            teamName: "remaining-submission-oauth",
+            participationMode: "remaining-submission-oauth",
+            teamMembers: [],
+            problemStatement: '',
+            score: 0,
+            submission: '',
+            oAuthMethod: 'github'
+          });
+          done(null, user);
+      }
+    })
+  }
+));
+
+
+// configuration for linkedin
+passport.use(new LinkedInStrategy({
+  clientID: process.env.LINKEDIN_KEY,
+  clientSecret: process.env.LINKEDIN_SECRET,
+  callbackURL: "http://localhost:3000/auth/linkedin/callback",
+  scope: ['r_emailaddress', 'r_basicprofile'],
+}, (accessToken, refreshToken, profile, done) => {
+  // asynchronous verification, for effect...
+  process.nextTick(function () {
+    // To keep the example simple, the user's LinkedIn profile is returned to
+    // represent the logged-in user. In a typical application, you would want
+    // to associate the LinkedIn account with a user record in your database,
+    // and return that user instead.
+    return done(null, profile);
+  });
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+// Used to decode the received cookie and persist session
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
+
+
+
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next()
   }
-  res.redirect('/login')
+  res.redirect('/getstarted')
 }
 
 function checkNotAuthenticated(req, res, next) {
@@ -84,7 +166,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/dashboard', checkAuthenticated, async (req, res) => {
-  let announcement;
+  collectionLogin.findOne({ email: req.session.passport.user }).then(async function (user) { 
+    if(user.teamName == "remaining-submission-oauth") {
+      res.render('registerteam')
+    }
+    else {
+      let announcement;
   let eventDetails = await collectionEvent.findOne({
     'search': "queryRound"
   }).then(function (docs) {
@@ -109,6 +196,9 @@ app.get('/dashboard', checkAuthenticated, async (req, res) => {
       res.render('index2')
     }
   })
+  }
+  })
+  
 })
 
 app.post("/submissionRound_one", checkAuthenticated, (req, res) => {
@@ -132,6 +222,7 @@ app.post("/submissionRound_one", checkAuthenticated, (req, res) => {
     res.redirect("/dashboard")
   })
 })
+
 app.post("/updateTeamMembers", checkAuthenticated, (req, res) => {
   let teamMateNames = []
   for (let i = 1; i <= 4; i++) {
@@ -180,7 +271,7 @@ app.get("/deleteParticipant", checkAuth, (req, res) => {
   collectionLogin.deleteOne(query, function (err, obj) {
     if (err) {
       res.send("error");
-    }
+    }   
     console.log("1 document deleted");
     res.send("done")
   });
@@ -208,6 +299,7 @@ app.get("/giveScores", checkAuth, (req, res) => {
     })
   })
 })
+
 app.get("/getAdminNews", checkAuth, async (req, res) => {
   collectionAnnouncement.find().toArray(async (err, announcements) => {
     res.send(announcements)
@@ -220,9 +312,14 @@ app.get("/getAdminParticipants", checkAuth, (req, res) => {
   })
 })
 
-app.get('/login', checkNotAuthenticated, (req, res) => {
-  res.render('login')
+app.get('/getstarted', checkNotAuthenticated, (req, res) => {
+  res.render('getstarted')
 })
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+  successRedirect: '/dashboard',
+  failureRedirect: '/getstarted',
+  failureFlash: true
+}))
 
 app.get('/admindashboard', checkAuth, (req, res) => {
   collectionLogin.find().toArray(async (err, participants) => {
@@ -253,14 +350,83 @@ app.delete('/logoutadmin', checkAuth, function (req, res) {
   res.redirect('/adminLoginPage');
 });
 
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/dashboard',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
+//Login with linkedIN
+app.get('/auth/linkedin',
+  passport.authenticate('linkedin', { state: 'SOME STATE'  }),
+  function(req, res){
+    // The request will be redirected to LinkedIn for authentication, so this
+    // function will not be called.
+  });
 
-app.get('/register', checkNotAuthenticated, (req, res) => {
-  res.render('register')
+app.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
+  successRedirect: '/registerteam',
+  failureRedirect: '/getstarted'
+}));
+
+//login with google
+app.get('/auth/google',
+  passport.authenticate('google', { scope: 
+      [ 'https://www.googleapis.com/auth/userinfo.profile',
+      , 'https://www.googleapis.com/auth/userinfo.email' ] }
+));
+
+app.get( '/auth/google/callback', 
+    passport.authenticate( 'google', { 
+        successRedirect: '/registerteam',
+        failureRedirect: '/getstarted'
+}));
+
+
+//login with github
+app.get('/auth/github',
+  passport.authenticate('github')
+);
+
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/getstarted' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/registerteam');
+  });
+
+//registering team after first login
+app.get('/registerteam', checkAuthenticated, (req, res) => {
+  console.log("reached here")
+  collectionLogin.findOne({ email: req.session.passport.user }).then(async (user) => { 
+    if(await user.teamName == "remaining-submission-oauth") {
+      res.render('registerteam')
+    }
+    else {
+      res.redirect("dashboard")
+    }
+  })
+})
+
+app.post('/oauthadditional', (req, res) => {
+collectionLogin.findOne({ email: req.session.passport.user }).then(function (user) { 
+    if(user.teamName == "remaining-submission-oauth") {
+      let query = {
+        email: req.session.passport.user
+      }
+      let newValues = {
+        $set: {
+          teamName: req.body.teamname,
+          participationMode: req.body.participation
+        }
+      }
+      collectionLogin.updateOne(query, newValues, (err, res) => {
+        if (err) throw err;
+      })
+      res.redirect("/dashboard")
+    }
+    else {
+      res.redirect("/dashboard")
+    }
+  })
+})
+
+app.get('/getstarted', checkNotAuthenticated, (req, res) => {
+  res.render('getstarted')
 })
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
@@ -283,21 +449,22 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
             teamMembers: [],
             problemStatement: '',
             score: 0,
-            submission: ''
+            submission: '',
+            oAuthMethod: 'local'
           });
-          res.redirect('/login')
+          res.redirect('/getstarted')
         } else {
           res.render('alreadyExists')
         }
       })
   } catch (e) {
-    res.redirect('/register')
+    res.redirect('/getstarted')
   }
 })
 
 app.delete('/logout', (req, res) => {
   req.logOut()
-  res.redirect('/login')
+  res.redirect('/getstarted')
 })
 
 app.listen(port, () => {

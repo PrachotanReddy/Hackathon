@@ -1,0 +1,84 @@
+.image-container-box {
+  background-image: url("../resources/login.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.card {
+  background-color: #880e4f;
+}
+
+#login-container {
+  display: flex;
+}
+
+#signup-container {
+  display: none;
+}
+
+#registerButton, #loginButton {
+  min-height: fit-content;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.social-sign-in {
+  border-radius: 2px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.social-sign-in:first-child {
+  background-color: #0072b1;
+}
+
+.social-sign-in:nth-child(2) {
+  background-color: #db4437;
+}
+
+.social-sign-in:last-child {
+  background-color: #333333;
+}
+
+.social-sign-in:hover {
+  box-shadow: 1px 1px 1px #3e3e3e !important;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+label {
+  font-size: 1.8rem;
+}
+
+.background-particle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+form, .tab-changer {
+  z-index: 10;
+}
+
+.close-register {
+  position: absolute;
+  font-size: 3.5rem;
+  color: #eee;
+}
+
+.close-button {
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  text-align: center;
+  cursor: pointer;
+}

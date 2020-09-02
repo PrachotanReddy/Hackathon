@@ -73,4 +73,7 @@
         margin-bottom: 5px;
         width: auto;
     }
+    .displayCardInformation {
+        margin-top: 20rem !important;
+    }
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hackathon</title>
+  <!-- Halfmoon CSS -->
+  <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <!-- Halfmoon JS -->
+  <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  <style>
+    .page-wrapper {
+      background-image: url("./resources/login.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card {
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <div class="content-wrapper d-flex flex-column justify-content-center">
+      <div class="register-container card w-400 mx-auto text-white">
+        <h1 class="text-center text-white">One more step</h1>
+        <form action="/oauthadditional" method="POST" class="w-400 mw-full mx-auto">
+        <p>Before we get started, we need some information from you</p>
+          <div class="form-group">
+            <label for="teamname" class="required">Team Name</label>
+            <input type="text" class="form-control" id="teamname" placeholder="Enter your team name" name="teamname" required="required">
+          </div>
+          <div class="form-group">
+            <label for="participation">Participation Mode</label>
+            <select class="form-control" id="participation" name="participation">
+              <option value="" selected="selected" disabled="disabled">-Select-</option>
+              <option value="team">Team</option>
+              <option value="individual">Individual</option>
+              <option value="business">Startup/Company</option>
+            </select>
+          </div>
+          <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="Confirm" style="width: 10rem;">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

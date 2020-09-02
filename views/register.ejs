@@ -9,6 +9,8 @@
   <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css" rel="stylesheet" />
   <!-- Halfmoon JS -->
   <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
   <style>
     .page-wrapper {
       background-image: url("./resources/login.jpg");
@@ -19,6 +21,24 @@
     .card {
       background-color: rgba(0, 0, 0, 0.7);
       border-radius: 10px;
+    }
+    .social-sign-in {
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .social-sign-in:first-child {
+      background-color: #0072b1;
+    }
+    .social-sign-in:nth-child(2) {
+      background-color: #db4437;
+    }
+    .social-sign-in:last-child {
+      background-color: #333333;
+    }
+    .social-sign-in:hover {
+      box-shadow: 1px 1px 1px #3e3e3e !important;
+      background-color: #ffffff;
+      color: #000000;
     }
   </style>
 </head>
@@ -52,10 +72,25 @@
               required="required">
           </div>
           <div class="text-center">
-            <input class="btn btn-primary" type="submit" value="Submit" style="width: 10rem;">
+            <input class="btn btn-secondary" type="submit" value="Submit" style="width: 10rem;">
           </div>
         </form>
-        <p class="text-center">Already registered? <a href="/login">Login Here</a></p>
+        <p class="text-center pt-0 mt-0">Already registered? <a href="/login">Login Here</a></p>
+        <p class="text-center font-weight-bold">- OR -</p>
+        <div class="row d-flex flex-column flex-md-row justify-content-around">
+          <div class="col-12 col-md-3 social-sign-in mb-10 my-md-0 text-center d-flex flex-column justify-content-center py-5" onclick="location.replace('/auth/linkedin')">
+            <i class="fab fa-linkedin-in" style="font-size: 2.5rem;"></i>
+          </div>
+  
+          <div class="col-12 col-md-3 social-sign-in mb-10 my-md-0 text-center d-flex flex-column justify-content-center py-5" onclick="location.replace('/auth/google')">
+            <i class="fab fa-google" style="font-size: 2.5rem;"></i>
+          </div>
+  
+          <div class="col-12 col-md-3 social-sign-in mb-10 my-md-0 text-center d-flex flex-column flex-mdjustify-content-center py-5" onclick="location.replace('/auth/github')">
+            <i class="fab fa-github" style="font-size: 2.5rem;"></i>
+          </div>
+  
+        </div>
       </div>
     </div>
   </div>

@@ -9,3 +9,10 @@
     display: flex;
     flex-direction: column;
 }
+
+
+@media only screen and (max-width: 768px) {
+    .displayCardInformation {
+        margin-top: 10rem !important;
+    }
+}
