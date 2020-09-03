@@ -3,77 +3,35 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
+      <title>Home | Hackathon</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet     " href="./style/home.css" />
       <style>
-            @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-            #water-video {
-              position: fixed;
-              right: 0;
-              bottom: 0;
-              min-width: 100%;
-              min-height: 100%;
-              z-index: -1;
-            }
-            .bg-black-gradient {
-                  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95));
-                  height: 100vh;
-                  position: relative;
-            }
-            .bg-transparent-black {
-                  background-color: rgba(0, 0, 0, 0.3);
-            }
-            .bg-black {
-                  background-color: rgba(0, 0, 0, 0.95);
-            }
-            .icon-scroll,
-.icon-scroll:before {
-    position: absolute;
-    left: 50%
-}
-      .icon-scroll {
-      width: 30px;
-      height: 50px;
-      margin-left: -20px;
-      bottom: 60px;
-      margin-top: -35px;
-      border: 2px solid #fff;
-      border-radius: 25px
-      }
-      .icon-scroll:before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: #fff;
-      margin-left: -4px;
-      top: 8px;
-      border-radius: 4px;
-      animation-duration: 1.5s;
-      animation-iteration-count: infinite;
-      animation-name: scroll
-      }
-      @keyframes scroll {
-            0% {
-                  opacity: 1
-            }
-            100% {
-                  opacity: 0;
-                  transform: translateY(26px)
-            }
-      }
-      .scroll-message {
-            position: absolute;
-            text-align: center;
-            bottom: 0;
-            left: 0;
-            right: 0;
-      }
+           
       </style>
 </head>
-<body data-spy="scroll" data-target="#navbar">
-    
+<body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
+      <script>
+            function removeLoader() {
+                  document.getElementById('loader').style.display = "none";
+                  document.getElementById('page-wrapper').style.display = "initial";
+            }
+      </script>
+   
+       <div class="loader-animation-holder" id="loader" style="width: 100%; height: 100%;">
+      <div class="wrapper">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <span class="text-dark">Loading</span>
+      </div>
+    </div>
+    <div id="page-wrapper">
       <nav class="navbar fixed-top navbar-expand-lg navbar-dark pr-5" id="navbar" style="background-color: rgba(0, 0, 0, 0.5);">
   <a class="navbar-brand" href="#">Hackathon</a>
   <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +51,6 @@
     </ul>
   </div>
       </nav>
-   
       <!-- contains the video -->
       <div class="container-fluid">
             <video muted autoplay  loop id="water-video">
@@ -108,7 +65,6 @@
         <p class="p-0 m-0 text-white text-center font-weight-bold layer" style="font-size: 1.5rem;" data-params='30,500,10000'>Over <span class="text-warning">1.5 billion</span> people do not have access to <span class="text-warning">clean, safe</span> water.</p>
         <div class="icon-scroll"></div>
         <p class="scroll-message d-none d-md-block text-white">Scroll Down</p>
-        <p class="scroll-message d-block d-md-none text-white">Swipe</p>
       </div>
 
       <!-- contains the about section -->
@@ -140,7 +96,7 @@
             </div>
             <div class="container-fluid pt-5 bg-black" id="problem" style="min-height: 100vh;">
             <div class="container mt-5 text-light">
-                        <h2 class="d-none d-md-block display-4 font-weight-bold">Problem Statements</h2>
+                  <h2 class="d-none d-md-block display-4 font-weight-bold">Problem Statements</h2>
                         <h2 class="d-md-none font-weight-bold">Problem Statements</h2>
                         <div class="row mt-5 d-flex">
                   <div class="card bg-transparent text-light col-12 col-md-4 border-light">
@@ -148,7 +104,7 @@
                               <h5 class="card-title">Problem Statement 1</h5>
                               <h6 class="card-subtitle mb-2 text-muted">Short Title 1</h6>
                               <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link">Example link</a>
+                              <a href="#" class="card-link text-warning">Example link</a>
                         </div>
                   </div>
                   <div class="card bg-transparent text-light col-12 col-md-4 border-light">
@@ -156,7 +112,7 @@
                               <h5 class="card-title">Problem Statement 2</h5>
                               <h6 class="card-subtitle mb-2 text-muted">Short Title 2</h6>
                               <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link">Example link</a>
+                              <a href="#" class="card-link text-warning">Example link</a>
                         </div>
                   </div>
                   <div class="card bg-transparent text-light col-12 col-md-4 border-light">
@@ -164,7 +120,7 @@
                               <h5 class="card-title">Problem Statement 3</h5>
                               <h6 class="card-subtitle mb-2 text-muted">Short Title 3</h6>
                               <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link">Example link</a>
+                              <a href="#" class="card-link text-warning">Example link</a>
                         </div>
                   </div>
                   <div class="card bg-transparent text-light col-12 col-md-4 border-light">
@@ -172,7 +128,7 @@
                               <h5 class="card-title">Problem Statement 4</h5>
                               <h6 class="card-subtitle mb-2 text-muted">Short Title 4</h6>
                               <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link">Example link</a>
+                              <a href="#" class="card-link text-warning">Example link</a>
                         </div>
                   </div>
                   <div class="card bg-transparent text-light col-12 col-md-4 border-light">
@@ -180,7 +136,7 @@
                               <h5 class="card-title">Problem Statement 5</h5>
                               <h6 class="card-subtitle mb-2 text-muted">Short Title 5</h6>
                               <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link">Example link</a>
+                              <a href="#" class="card-link text-warning">Example link</a>
                         </div>
                   </div>
                   <div class="card bg-transparent text-light col-12 col-md-4 border-light">
@@ -188,16 +144,16 @@
                               <h5 class="card-title">Problem Statement 6</h5>
                               <h6 class="card-subtitle mb-2 text-muted">Short Title 6</h6>
                               <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link">Example link</a>
+                              <a href="#" class="card-link text-warning">Example link</a>
                         </div>
                   </div>
             </div>
       </div>
       </div>
 
-      <!-- contains the details -->
-      <div class="container-fluid pt-5 bg-black d-flex flex-column justify-content-center pb-5" id="start" style="height: 100vh;">
-            <div class="row mx-auto col-12 col-md-6 text-center text-white">
+      <!-- contains the link and details -->
+      <div class="container-fluid pt-5 bg-black px-5 d-flex flex-column justify-content-center" id="start" style="height: 100vh;">
+            <div class="row mx-auto col-12 col-md-6 text-center text-white d-flex flex-column justify-content-center">
                   <h2 class="d-none d-md-block display-4 font-weight-bold mx-auto">It's time to hack</h2>
                         <h2 class="d-md-none font-weight-bold">It's time to hack</h2>
                   <p class="p-0 m-0 mb-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quos rem quo esse quod, expedita, labore facere eius voluptatem exercitationem, sapiente ad corporis quae voluptatum eum dolores quaerat voluptate sequi. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente ipsam quibusdam possimus. Dolorum, assumenda sunt accusamus veritatis eius totam quo laboriosam repellat iusto, aspernatur, quia illum nesciunt? Ipsa, pariatur quas!</p>
@@ -220,6 +176,7 @@
   </div>
 
 </footer>
+</div>
 
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

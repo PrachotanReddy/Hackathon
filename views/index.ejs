@@ -20,8 +20,21 @@
 </head>
 
 <body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-dm-shortcut-enabled="true"
-  data-sidebar-shortcut-enabled="true" data-set-preferred-theme-onload="true" onload="changeTab('welcome-toggle')">
-  <div class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom">
+  data-sidebar-shortcut-enabled="true" data-set-preferred-theme-onload="true" onload="loadingProcess()">
+  
+       <div class="loader-animation-holder" id="loader" style="width: 100%; height: 100%;">
+      <div class="wrapper">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <span class="text-dark">Loading</span>
+      </div>
+    </div>
+
+  <div class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom" id="main">
     <nav class="navbar justify-content-between">
       <div class="navbar-content">
         <button id="toggle-sidebar-btn" class="btn btn-action" type="button" onclick="halfmoon.toggleSidebar()">
