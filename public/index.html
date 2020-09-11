@@ -1,185 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Home | Hackathon</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <link rel="stylesheet     " href="./style/home.css" />
-      <style>
-           
-      </style>
-</head>
-<body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
-      <script>
-            function removeLoader() {
-                  document.getElementById('loader').style.display = "none";
-                  document.getElementById('page-wrapper').style.display = "initial";
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | Hackathon</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style/home.css" />
+    <style></style>
+  </head>
+  <body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
+    <script>
+      function removeLoader() {
+        document.getElementById('loader').style.display = 'none'
+        document.getElementById('page-wrapper').style.display = 'initial'
+      }
+      function sendFormData() {
+            let valueOfEmail = document.getElementById('subscribeEmail').value;
+            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if(re.test(valueOfEmail)) {
+                  var xhttp = new XMLHttpRequest();
+                  xhttp.open("GET", "/newsletter/"+valueOfEmail, true);
+                  xhttp.send();
+                  document.getElementById('message').innerText = "Added successfully"
             }
-      </script>
-   
-       <div class="loader-animation-holder" id="loader" style="width: 100%; height: 100%;">
+      }
+    </script>
+
+    <div
+      class="loader-animation-holder"
+      id="loader"
+      style="width: 100%; height: 100%"
+    >
       <div class="wrapper">
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="shadow"></div>
-            <div class="shadow"></div>
-            <div class="shadow"></div>
-            <span class="text-dark">Loading</span>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <span class="text-dark">Loading</span>
       </div>
     </div>
     <div id="page-wrapper">
-      <nav class="navbar fixed-top navbar-expand-lg navbar-dark pr-5" id="navbar" style="background-color: rgba(0, 0, 0, 0.5);">
-  <a class="navbar-brand" href="#">Hackathon</a>
-  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="#about">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#problem">Problem Statements</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#start">Get Started</a>
-      </li>
-    </ul>
-  </div>
+      <nav
+        class="navbar fixed-top navbar-expand-lg navbar-dark pr-5"
+        id="navbar"
+        style="background-color: rgba(0, 0, 0, 0.5)"
+      >
+        <a class="navbar-brand" href="#">Hackathon</a>
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#problem">Problem Statements</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#start">Get Started</a>
+            </li>
+          </ul>
+        </div>
       </nav>
       <!-- contains the video -->
       <div class="container-fluid">
-            <video muted autoplay  loop id="water-video">
-                  <source src="./resources/bubbles.mp4" type="video/mp4">
-            </video>
+        <video muted autoplay loop id="water-video">
+          <source src="./resources/bubbles.mp4" type="video/mp4" />
+        </video>
       </div>
 
       <!-- contains the did you know -->
-      <div class="container-fluid d-flex flex-column justify-content-center bg-black-gradient" id="home" style="height: 100vh;">
-        <h1 class="pb-0 mb-0 text-center d-none d-md-block font-weight-bold" style="font-size: 10rem; color: rgb(255, 255, 255); font-family: 'Bebas Neue', cursive;">Did you know?</h1>
-        <h1 class="pb-0 mb-0 text-center d-block d-md-none font-weight-bold" style="font-size: 3rem; color: rgb(255, 255, 255); font-family: 'Bebas Neue', cursive;">Did you know?</h1>
-        <p class="p-0 m-0 text-white text-center font-weight-bold layer" style="font-size: 1.5rem;" data-params='30,500,10000'>Over <span class="text-warning">1.5 billion</span> people do not have access to <span class="text-warning">clean, safe</span> water.</p>
+      <div
+        class="container-fluid d-flex flex-column justify-content-center bg-black-gradient"
+        id="home"
+        style="height: 100vh"
+      >
+        <h1
+          class="pb-0 mb-0 text-center d-none d-md-block font-weight-bold"
+          style="
+            font-size: 10rem;
+            color: rgb(255, 255, 255);
+            font-family: 'Bebas Neue', cursive;
+          "
+        >
+          WINnovations
+        </h1>
+        <h1
+          class="pb-0 mb-0 text-center d-block d-md-none font-weight-bold"
+          style="
+            font-size: 3rem;
+            color: rgb(255, 255, 255);
+            font-family: 'Bebas Neue', cursive;
+          "
+        >
+          WINnovations
+        </h1>
+        <p
+          class="p-0 m-0 text-white text-center font-weight-bold layer"
+          style="font-size: 1.5rem"
+          data-params="30,500,10000"
+        >
+          The Innovation Portal Under the
+          <span class="text-primary">Smart Water Hub</span> Initiative
+        </p>
         <div class="icon-scroll"></div>
         <p class="scroll-message d-none d-md-block text-white">Scroll Down</p>
       </div>
 
       <!-- contains the about section -->
-      <div class="container-fluid pt-5 bg-black" id="about" style="min-height: 100vh;">
-            <div class="container text-white d-flex flex-column-reverse flex-md-row h-100">
-                  <div class="col-12 col-md-7 d-flex flex-column justify-content-center m-0 p-0">
-                        <h1 class="d-none d-md-block display-3 font-weight-bold">Sewerage Hackathon</h1>
-                        <h1 class="d-md-none font-weight-bold">Sewerage Hackathon</h1>
-                        <p class="p-0 m-0 mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae eum dolor numquam, eius sapiente et laudantium facilis sed id voluptatem ducimus saepe quia consectetur cumque molestias neque qui tenetur ad. Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur delectus, qui amet obcaecati, atque accusantium suscipit cum consequuntur quos unde asperiores? Laborum repellat odit maxime iste voluptatum incidunt voluptatem impedit! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis corporis ab laborum quam amet expedita magnam temporibus, aliquam non reprehenderit commodi voluptatem doloremque deleniti adipisci. Praesentium corrupti sequi sapiente alias?</p>
-                        <div class="row text-white justify-content-around mt-2">
-                              <div class="d-flex flex-column justify-content-center text-center">
-                                    <i class="fas fa-users mb-3" style="font-size: 3rem;"></i>
-                                    <p>150+<br />Participants</p>
-                              </div>
-                              <div class="d-flex flex-column justify-content-center text-center">
-                                    <i class="far fa-building mb-3" style="font-size: 3rem;"></i>
-                                    <p>12+<br />Organizations</p>
-                              </div>
-                              <div class="d-flex flex-column justify-content-center text-center">
-                                    <i class="fas fa-project-diagram mb-3" style="font-size: 3rem;"></i>
-                                    <p>15+<br />Projects</p>
-                              </div>
-                        </div>
-                  </div>
-                  <div class="col-12 col-md-5 d-none d-md-flex flex-column justify-content-center">
-                        <img class="img-fluid" src="./resources/tunnel.jpg" alt="Open end of a tunnel">                  
-                  </div>
+      <div
+        class="container-fluid pt-5 bg-black"
+        id="about"
+        style="min-height: 100vh"
+      >
+        <div
+          class="container text-white d-flex flex-column-reverse flex-md-row h-100"
+        >
+          <div
+            class="col-12 col-md-7 d-flex flex-column justify-content-center m-0 p-0"
+          >
+            <h1 class="d-none d-md-block display-3 font-weight-bold">
+              WINnovations
+            </h1>
+            <h1 class="d-md-none font-weight-bold">WINnovations</h1>
+            <p class="p-0 m-0 mb-5">
+              We believe everyone has the power to change the world – and find
+              solutions to the biggest challenges in our time. But to make this
+              happen, we need to stand together. Our mission is to build a
+              community where the best talent could meet and collaborate towards
+              future innovations. Whether you are an individual, an aspiring
+              startup, entrepreneur or a corporation with the aspiration to make
+              things better – you are welcome to join! WINnovations is open to
+              all skillsets and ideas: aspiring teams and individuals, corporate
+              teams and students, ideas and projects. We are building a culture
+              of innovation through collaboration.
+            </p>
+            <div class="row text-white justify-content-around mt-2">
+              <div
+                class="d-flex flex-column justify-content-center text-center"
+              >
+                <i class="fas fa-users mb-3" style="font-size: 3rem"></i>
+                <p>150+<br />Participants</p>
+              </div>
+              <div
+                class="d-flex flex-column justify-content-center text-center"
+              >
+                <i class="far fa-building mb-3" style="font-size: 3rem"></i>
+                <p>12+<br />Organizations</p>
+              </div>
+              <div
+                class="d-flex flex-column justify-content-center text-center"
+              >
+                <i
+                  class="fas fa-project-diagram mb-3"
+                  style="font-size: 3rem"
+                ></i>
+                <p>15+<br />Projects</p>
+              </div>
             </div>
-            </div>
-            <div class="container-fluid pt-5 bg-black" id="problem" style="min-height: 100vh;">
-            <div class="container mt-5 text-light">
-                  <h2 class="d-none d-md-block display-4 font-weight-bold">Problem Statements</h2>
-                        <h2 class="d-md-none font-weight-bold">Problem Statements</h2>
-                        <div class="row mt-5 d-flex">
-                  <div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                        <div class="card-body">
-                              <h5 class="card-title">Problem Statement 1</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Short Title 1</h6>
-                              <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link text-warning">Example link</a>
-                        </div>
-                  </div>
-                  <div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                        <div class="card-body">
-                              <h5 class="card-title">Problem Statement 2</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Short Title 2</h6>
-                              <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link text-warning">Example link</a>
-                        </div>
-                  </div>
-                  <div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                        <div class="card-body">
-                              <h5 class="card-title">Problem Statement 3</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Short Title 3</h6>
-                              <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link text-warning">Example link</a>
-                        </div>
-                  </div>
-                  <div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                        <div class="card-body">
-                              <h5 class="card-title">Problem Statement 4</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Short Title 4</h6>
-                              <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link text-warning">Example link</a>
-                        </div>
-                  </div>
-                  <div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                        <div class="card-body">
-                              <h5 class="card-title">Problem Statement 5</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Short Title 5</h6>
-                              <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link text-warning">Example link</a>
-                        </div>
-                  </div>
-                  <div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                        <div class="card-body">
-                              <h5 class="card-title">Problem Statement 6</h5>
-                              <h6 class="card-subtitle mb-2 text-muted">Short Title 6</h6>
-                              <p class="card-text">Aliquam et turpis nec enim congue placerat. Aenean laoreet tellus lectus, non venenatis mi faucibus in. Integer augue enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed vehicula ipsum nisi, ac laoreet ante placerat nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-                              <a href="#" class="card-link text-warning">Example link</a>
-                        </div>
-                  </div>
-            </div>
+          </div>
+          <div
+            class="col-12 col-md-5 d-none d-md-flex flex-column justify-content-center"
+          >
+            <img
+              class="img-fluid"
+              src="./resources/tunnel.jpg"
+              alt="Open end of a tunnel"
+            />
+          </div>
+        </div>
       </div>
+      <div
+        class="container-fluid pt-5 bg-black"
+        id="problem"
+        style="min-height: 100vh"
+      >
+      <!-- Container for problem statements -->
+        <div class="container mt-5 text-light">
+          <h2 class="d-none d-md-block display-4 font-weight-bold">
+            Problem Statements
+          </h2>
+          <h2 class="d-md-none font-weight-bold">Problem Statements</h2>
+          <div class="row mt-5 d-flex">
+            <div
+              class="card bg-transparent text-light col-12 col-md-4 border-light"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Problem Statement 1</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Short Title 1</h6>
+                <p class="card-text">
+                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
+                  tellus lectus, non venenatis mi faucibus in. Integer augue
+                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
+                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
+                  aptent taciti sociosqu ad litora torquent per conubia nostra,
+                  per inceptos himenaeos.
+                </p>
+                <a href="#" class="card-link text-warning">Example link</a>
+              </div>
+            </div>
+            <div
+              class="card bg-transparent text-light col-12 col-md-4 border-light"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Problem Statement 2</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Short Title 2</h6>
+                <p class="card-text">
+                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
+                  tellus lectus, non venenatis mi faucibus in. Integer augue
+                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
+                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
+                  aptent taciti sociosqu ad litora torquent per conubia nostra,
+                  per inceptos himenaeos.
+                </p>
+                <a href="#" class="card-link text-warning">Example link</a>
+              </div>
+            </div>
+            <div
+              class="card bg-transparent text-light col-12 col-md-4 border-light"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Problem Statement 3</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Short Title 3</h6>
+                <p class="card-text">
+                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
+                  tellus lectus, non venenatis mi faucibus in. Integer augue
+                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
+                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
+                  aptent taciti sociosqu ad litora torquent per conubia nostra,
+                  per inceptos himenaeos.
+                </p>
+                <a href="#" class="card-link text-warning">Example link</a>
+              </div>
+            </div>
+            <div
+              class="card bg-transparent text-light col-12 col-md-4 border-light"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Problem Statement 4</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Short Title 4</h6>
+                <p class="card-text">
+                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
+                  tellus lectus, non venenatis mi faucibus in. Integer augue
+                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
+                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
+                  aptent taciti sociosqu ad litora torquent per conubia nostra,
+                  per inceptos himenaeos.
+                </p>
+                <a href="#" class="card-link text-warning">Example link</a>
+              </div>
+            </div>
+            <div
+              class="card bg-transparent text-light col-12 col-md-4 border-light"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Problem Statement 5</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Short Title 5</h6>
+                <p class="card-text">
+                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
+                  tellus lectus, non venenatis mi faucibus in. Integer augue
+                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
+                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
+                  aptent taciti sociosqu ad litora torquent per conubia nostra,
+                  per inceptos himenaeos.
+                </p>
+                <a href="#" class="card-link text-warning">Example link</a>
+              </div>
+            </div>
+            <div
+              class="card bg-transparent text-light col-12 col-md-4 border-light"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Problem Statement 6</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Short Title 6</h6>
+                <p class="card-text">
+                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
+                  tellus lectus, non venenatis mi faucibus in. Integer augue
+                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
+                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
+                  aptent taciti sociosqu ad litora torquent per conubia nostra,
+                  per inceptos himenaeos.
+                </p>
+                <a href="#" class="card-link text-warning">Example link</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
       <!-- contains the link and details -->
-      <div class="container-fluid pt-5 bg-black px-5 d-flex flex-column justify-content-center" id="start" style="height: 100vh;">
-            <div class="row mx-auto col-12 col-md-6 text-center text-white d-flex flex-column justify-content-center">
-                  <h2 class="d-none d-md-block display-4 font-weight-bold mx-auto">It's time to hack</h2>
-                        <h2 class="d-md-none font-weight-bold">It's time to hack</h2>
-                  <p class="p-0 m-0 mb-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quos rem quo esse quod, expedita, labore facere eius voluptatem exercitationem, sapiente ad corporis quae voluptatum eum dolores quaerat voluptate sequi. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente ipsam quibusdam possimus. Dolorum, assumenda sunt accusamus veritatis eius totam quo laboriosam repellat iusto, aspernatur, quia illum nesciunt? Ipsa, pariatur quas!</p>
-                  <button type="button" class="btn btn-outline-light mx-auto" onclick="window.location.replace('/getstarted')">Register Now</button>
-            </div>  
+      <div
+        class="container-fluid pt-5 pb-20 bg-black px-5 d-flex flex-column justify-content-center"
+        id="start"
+        style="min-height: 100vh; height: max-content;"
+      >
+        <div
+          class="row-fluid mx-auto col-12 col-md-6 text-center text-white pb-20"
+        >
+          <h2 class="d-none d-md-block display-4 font-weight-bold mx-auto">
+            It's time to hack
+          </h2>
+          <h2 class="d-md-none font-weight-bold">It's time to hack</h2>
+          <p class="p-0 m-0 mb-3">
+            Your efforts don't go in vain. Here are the perks you get.
+            <ul class="text-left pb-10">
+                  <li>Put your ideas to implementation with funds and support from the government.</li>
+                  <li>Access to exclusive resources, workshops and infrastructure from WINnovations and its affiliates.</li>
+                  <li>Oppurtunity to work alongside the government and be recognised by start-ups and tech giants.</li>
+                  <li>Goodies and cash prizes for the best innovators.</li>
+            </ul>
+            <h3 class="text-center" style="padding: 25px 2px;">How to participate?</h3>
+            <div class="row d-flex flex-column flex-md-row mt-20">
+                  <div class="col-12 col-md-6 col-lg-3">
+                        <i class="fas fa-mouse-pointer" style="font-size: 3rem;"></i>
+                        <p>Register on our portal</p>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                        <i class="fas fa-list" style="font-size: 3rem;"></i>
+                        <p>Choose the problem statement</p>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                        <i class="fas fa-tools" style="font-size: 3rem;"></i>
+                        <p>Get working on your submission</p>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                        <i class="fas fa-microphone" style="font-size: 3rem;"></i>
+                        <p>Wait for the results</p>
+                  </div>
+            </div>
+          </p>
+          <button
+            type="button"
+            class="btn btn-outline-light mx-auto" style="margin-bottom: 30px;"
+            onclick="window.location.replace('/getstarted')"
+          >
+            Register Now
+          </button>
+        </div>
       </div>
 
-<footer class="page-footer font-small blue pt-4" style="background-color: #000;">
-  <div class="container-fluid text-center text-md-left d-flex flex-column-reverse flex-md-row">
-        <div class="col-12 col-md-6 pl-md-4 mt-5" style="color:rgb(180, 180, 180)">
-              <h2>The Hackathon Company</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa ullam accusantium voluptatem illo corrupti a quasi facilis aliquam quaerat, ad incidunt soluta voluptate mollitia quae natus itaque at animi optio!</p>
+      <footer
+        class="page-footer font-small blue pt-4"
+        style="background-color: #000"
+      >
+        <div
+          class="container-fluid text-center text-md-left d-flex flex-column-reverse flex-md-row"
+        >
+          <div
+            class="col-12 col-md-6 pl-md-4 mt-5"
+            style="color: rgb(180, 180, 180)"
+          >
+            <h2>WINnovations</h2>
+            <p>
+              A dedicated technology platform built to drive innovation in a
+              continuous and real time manner. The platform helps accelerate the
+              execution of ideas & facilitates the engagement with external
+              entities
+            </p>
+          </div>
+          <div class="col-12 col-md-6 text-center d-flex flex-column justify-content-center">
+            <img
+              class="img"
+              height="80"
+              src="https://lh3.googleusercontent.com/proxy/yXLw9PwleWj3dULR_HjQ3mEwb5j_Q-B3iKLu6s9OzCb3JoDzPzAVnRg3pNXtVgqQg4A0TLaC0caLGDC9NiOVgYrnIPNbs3EnXQ_GG-9MkK0mExSwpTk"
+              alt="Hackathon logo"
+            />
+            <div class="d-flex flex-column justify-content-center">
+                  <p class="text-light">Signup for our newsletter to recieve latest updates</p>
+            <div class="d-flex flex-column flex-md-row justify-content-center w-75 mx-auto">
+            <input type="email" id="subscribeEmail" class="form-control w-75 mx-auto" name="newsletter_email" />
+            <button type="button" class="btn btn-warning mx-auto" onclick="sendFormData()">SignUp</button>
+            </div>
+            <p id="message" class="text-success"></p>
+            </div>
+          </div>
         </div>
-        <div class="col-12 col-md-6 text-center">
-              <img class="img my-5" height="80" src="https://lh3.googleusercontent.com/proxy/yXLw9PwleWj3dULR_HjQ3mEwb5j_Q-B3iKLu6s9OzCb3JoDzPzAVnRg3pNXtVgqQg4A0TLaC0caLGDC9NiOVgYrnIPNbs3EnXQ_GG-9MkK0mExSwpTk" alt="Hackathon logo">
+        <div
+          class="footer-copyright text-center py-3"
+          style="color: rgb(121, 121, 121)"
+        >
+          © <span id="yearHolder">2020</span> Copyright:
+          <span style="color: rgb(180, 180, 180)">WINnovations</span>
         </div>
-  </div>
-  <div class="footer-copyright text-center py-3" style="color: rgb(121, 121, 121);">© 2020 Copyright:
-    <span style="color: rgb(180, 180, 180);">Hackathon Company</span>
-  </div>
+      </footer>
+    </div>
 
-</footer>
-</div>
-
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-</body>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

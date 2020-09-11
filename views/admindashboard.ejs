@@ -83,6 +83,12 @@
                     </span>
                     Scoring
                 </a>
+                <a id="problem-toggle" class="sidebar-link sidebar-link-with-icon" onclick="changeTab(this.id)">
+                    <span class="sidebar-icon bg-transparent justify-content-start mr-0">
+                        <i class="fas fa-list" aria-hidden="true"></i>
+                    </span>
+                    Problem Statements
+                </a>
                 <a class="sidebar-link sidebar-link-with-icon" onclick="halfmoon.toggleDarkMode()">
                     <span class="sidebar-icon bg-transparent justify-content-start mr-0">
                         <i class="fas fa-adjust" aria-hidden="true"></i>
@@ -134,6 +140,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="problem" class="w-full pt-20">
+                <h2 class="text-center text-dark w-full">Problem Statements</h2>
             </div>
             <div id="participant" class="w-full pt-20">
                 <div class="container mx-auto pt-20 d-block">
