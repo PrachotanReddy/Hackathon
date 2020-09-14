@@ -18,7 +18,7 @@
     <style>
         #announcement,
         #scoring,
-        #participant {
+        #participant, #problem {
             display: none;
         }
 
@@ -33,7 +33,6 @@
         }
     </style>
 </head>
-
 <body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-dm-shortcut-enabled="true"
     data-sidebar-shortcut-enabled="true" data-set-preferred-theme-onload="true"
     onload="changeTab('participant-toggle')">
@@ -105,7 +104,7 @@
         <div class="content-wrapper">
             <div id="announcement" class="w-full pt-20">
                 <div class="container mx-auto pt-20">
-                    <div class="card bg-dark rounded">
+                    <div class="card rounded">
                         <h2 class="text-center">New Announcement</h2>
                         <form action="/addAdminNews" method="POST" class="w-400 w-three-quarter mx-auto">
                             <!-- Input -->
@@ -134,23 +133,68 @@
                         </form>
                     </div>
                     <div class="container-fluid pt-20">
-                        <h3 class="text-center pt-20">Existing Announcements</h3>
+                        <div class="card">
+                            <h3 class="text-center pt-20">Existing Announcements</h3>
+                        </div>
                         <div id="announcement-holder">
 
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="problem" class="w-full pt-20">
-                <h2 class="text-center text-dark w-full">Problem Statements</h2>
+            <div id="problem" class="w-full pt-20 ">
+                <div class="content">
+                    <div class="card">
+                        <h2 class="text-center w-full">Problem Statements</h2>
+                    </div>
+                    <div class="border-rounded mx-auto card">
+                        <form class="mx-auto w-full p-20" action="/problemstatement/set" method="POST">
+                              <h4 class="ml-10">Add Problem Statement</h4>
+                              <div class="form-group">
+                                    <label for="statement-heading" class="required">Heading</label>
+                                    <input type="text" class="form-control" name="title" id="statement-heading" placeholder="Enter the heading of the problem statement" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descriptionps" class="required">Description</label>
+                                    <textarea class="form-control" name="description" id="descriptionps" placeholder="Write a short description." required></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <input class="btn btn-primary" type="submit" value="Submit">
+                                </div>
+                        </form>
+                    </div>
+                    <div class="text-center card">
+                            <h4>Current Problem Statements</h4>
+                    </div>
+                    <div class="content p-20 card mx-auto mt-20 bg-transparent">
+                        <div class="row">
+                            <% problemstatements.forEach((item) => { %>
+                                <div class="col-12 col-md-6">
+                                    <div class="card">
+                                        <h2 class="card-title">
+                                        <%= item.heading %>
+                                        </h2>
+                                        <p class="text-muted">
+                                            <%= item.description %>
+                                        </p>
+                                        <div class="text-right"> <!-- text-right = text-align: right -->
+                                            <button class="btn btn-danger" type="button" id="<%= item._id %>" onclick="deleteProblem(this.id)">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="participant" class="w-full pt-20">
                 <div class="container mx-auto pt-20 d-block">
                     <div id="alertHolder">
 
                     </div>
-                    <h2 class="text-center">Participants</h2>
-
+                    <div class="card">
+                        <h2 class="text-center">Participants</h2>
+                    </div>
                     <div class="content">
                         <% data.forEach((participant) => { %>
                         <div class="card participant-card text-wrap" id="<%= participant._id %>">
@@ -222,7 +266,9 @@
             <div id="scoring" class="w-full pt-20">
                 <div class="container-fluid d-block">
                     <div class="container mx-auto pt-20">
-                        <h2 class="text-center">Scores</h2>
+                        <div class="card">
+                            <h2 class="text-center">Scores</h2>
+                        </div>
                     </div>
                     <div class="row">
                         <% data.forEach((participant) => { %>
@@ -264,6 +310,7 @@
     <!-- Halfmoon JS -->
     <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js">
     </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./scripts/admin.js"></script>
 </body>
 

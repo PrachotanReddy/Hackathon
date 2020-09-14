@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset | wInnovations</title>
+    <link
+      href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-image: url('../resources/login.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="content-wrapper d-flex flex-column justify-content-center">
+        <div
+          class="p-20 mx-auto w-full w-md-three-quarter w-lg-quarter"
+          id="full-page"
+          style="background-color: rgba(0, 0, 0, 0.7)"
+        >
+          <h2 class="text-center text-white">Forgot password?</h2>
+          <p class="text-white">
+            Enter the email address with which you have registered. We will send
+            you the reset link.
+          </p>
+          <div id="inputs-checker">
+            <form action="/passwordreset/reset/" method="POST">
+            <input
+              type="email"
+              class="form-control"
+              id="check-email"
+              name="checkforget"
+              placeholder="Email address"
+              required
+              autocomplete="off"
+            />
+
+            <div class="text-center pt-15">
+              <div class="text-center">
+                <input
+                  class="btn btn-primary w-full"
+                  type="submit"
+                  value="Submit"
+                />
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  </body>
+</html>

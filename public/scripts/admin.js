@@ -42,38 +42,48 @@ function deleteUserDetails(email) {
     })
 }
 
-function renderAnnouncements() {
-  let announceContent = ''
-  var xhttp = new XMLHttpRequest()
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      let recievedData = JSON.parse(this.responseText)
-      for (let i = recievedData.length - 1; i >= 0; i--) {
-        let news = recievedData[`${i}`].para
-        let heading = recievedData[`${i}`].announcementTitle
-        let buttonID = recievedData[`${i}`]._id
-        let announceDate = recievedData[`${i}`].dateText
-        let announceContent = `<div class="card">
-                                        <h2 class="card-title">${heading}</h2>
-                                        <p>${news}</p>
-                                        <p>${announceDate}</p>
-                                        <bu
-                                        </div>
-                                        <button class="btn btn-danger" type="button" id='${buttonID}' onclick="deleteAnnouncement(this.id)">Danger</button>`
-        document.getElementById(
-          'announcement-holder'
-        ).innerHTML += announceContent
-      }
-    }
+async function renderAnnouncements() {
+  axios.get('/getAdminNews')
+  .then(response => {
+        response.data.forEach((recievedData) => {
+          let news = recievedData.para
+          let heading = recievedData.announcementTitle
+          let buttonID = recievedData._id
+          let announceDate = recievedData.dateText
+          let announceContent = `<div class="card">
+                                          <h2 class="card-title">${heading}</h2>
+                                          <p>${news}</p>
+                                          <p>${announceDate}</p>
+                                          <bu
+                                          </div>
+                                          <button class="btn btn-danger" type="button" id='${buttonID}' onclick="deleteAnnouncement(this.id)">Danger</button>`
+          document.getElementById(
+            'announcement-holder'
+          ).innerHTML += announceContent
+        })
+  }).catch(error => console.error('server error'))
   }
-  xhttp.open('GET', '/getAdminNews', true)
-  xhttp.send()
+
+async function deleteAnnouncement(id) {
+  let url = '/deleteAdminNews/' + id
+  const response = await fetch(url, { 
+    method: 'DELETE', 
+    headers: { 
+        'Content-type': 'application/json'
+    } 
+});
+alert('The announcement was deleted. Refresh to see changes.')
 }
 
-function deleteAnnouncement(id) {
-  var xhttp = new XMLHttpRequest()
-  xhttp.open('DELETE', '/deleteAdminNews/' + id, true)
-  xhttp.send()
+async function deleteProblem(id) {
+    let url = "/problemstatement/delete?id=" + id;
+    const response = fetch(url, { 
+    method: 'DELETE', 
+    headers: { 
+        'Content-type': 'application/json'
+    } 
+});
+alert('The problem statement was deleted. Refresh to see changes')
 }
 
 function giveScores(email) {

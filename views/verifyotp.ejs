@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify | wInnovations</title>
+    <link
+      href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-image: url('../resources/login.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="content-wrapper d-flex flex-column justify-content-center">
+        <div
+          class="p-20 mx-auto w-full w-md-three-quarter w-lg-quarter"
+          id="full-page"
+          style="background-color: rgba(0, 0, 0, 0.7)"
+        >
+          <h2 class="text-center text-white">Verify account</h2>
+          <p class="text-white">
+            We sent you a six digit code to the email with which you registered. Enter it here.
+          </p>
+          <div id="inputs-checker">
+            <form action="/verifiyotp/verify" method="POST">
+            <input
+              type="number"
+              class="form-control"
+              id="check-otp"
+              name="sixpin"
+              placeholder="6 digit pin"
+              required
+              autocomplete="off"
+            />
+            <div class="text-center pt-15">
+              <div class="text-center">
+                <input
+                  class="btn btn-primary w-full"
+                  type="submit"
+                  value="Submit"
+                />
+              </div>
+              </form>
+
+            <% if(msg) { %>
+            <p class="text-white">
+              <%= msg %>
+            </p>
+            <% } %>
+            <% if(error) { %>
+                  <p class="text-danger text-center">That OTP is incorrect</p>
+            <% } %>
+            </div>
+            <button class="btn btn-secondary mt-10" type="button" onclick="window.location.replace('/resendOTP')">Resend OTP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  </body>
+</html>

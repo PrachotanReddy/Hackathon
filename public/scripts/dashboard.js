@@ -26,6 +26,9 @@ function changeTab(id) {
   if (redirectDestination === 'announcement') {
     renderAnnouncements()
   }
+  if(redirectDestination === 'problem') {
+    renderProblems()
+  }
   for (let i = 0; i < destinations.length; i++) {
     if (destinations[i] == redirectDestination) {
       let sidebarLinkSelection = destinations[i] + '-toggle'
@@ -37,8 +40,8 @@ function changeTab(id) {
   }
 }
 
-function renderAnnouncements() {
-  let announceContent = ''
+async function renderAnnouncements() {
+  document.getElementById('container-holder').innerHTML = ""
   var xhttp = new XMLHttpRequest()
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -64,4 +67,28 @@ function renderAnnouncements() {
   }
   xhttp.open('GET', '/getNews', true)
   xhttp.send()
+}
+
+async function renderProblems() {
+  document.getElementById(
+            'problem-placeholder'
+          ).innerHTML = ""
+  axios.get('/problems')
+  .then(response => {
+        response.data.forEach((recievedData) => {
+          let announceContent = `<div class="col-12 col-md-6">
+                                    <div class="card">
+                                      <h2 class="card-title font-weight-bold">
+                                        ${recievedData.heading}
+                                      </h2>
+                                      <p class="text-muted">
+                                        ${recievedData.description}
+                                      </p>
+                                    </div>
+                                  </div>`
+          document.getElementById(
+            'problem-placeholder'
+          ).innerHTML += announceContent
+        })
+  })
 }

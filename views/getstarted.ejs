@@ -102,21 +102,6 @@
                   autocomplete="on"
                 />
               </div>
-              <div class="custom-checkbox ml-20">
-                <input
-                  type="checkbox"
-                  id="tnc"
-                  value=""
-                  required
-                  class="mx-auto"
-                />
-                <label for="tnc"
-                  >I agree to the
-                  <a href="/termsandcondition" target="_blank"
-                    >terms and conditions</a
-                  ></label
-                >
-              </div>
               <p class="text-danger text-center font-weight-semi-bold">
                 <% if (messages.error) { %> <%= messages.error %> <% } %>
               </p>
@@ -129,12 +114,12 @@
                 />
               </div>
             </form>
-            <p
-              class="text-center"
-              onclick="alert('Working on this')"
-              style="cursor: pointer; z-index: 10"
-            >
-              <a class="text-white" style="text-decoration: none"
+            <p class="text-center" style="cursor: pointer; z-index: 10">
+              <a
+                href="/passwordreset/forgot"
+                target="_blank"
+                class="text-white"
+                style="text-decoration: none"
                 >Forgot Password?</a
               >
             </p>
@@ -230,25 +215,24 @@
                   autocomplete="off"
                 />
               </div>
-              <div class="custom-checkbox ml-20 mb-20">
+              <div class="custom-checkbox ml-20">
                 <input
                   type="checkbox"
-                  id="tnc"
+                  id="tncregis"
                   value=""
                   required
                   class="mx-auto"
                 />
-                <label for="tnc"
+                <label for="tncregis"
                   >I agree to the
                   <a href="/termsandcondition" target="_blank"
                     >terms and conditions</a
                   ></label
                 >
               </div>
-              <div class="form-inline"></div>
               <div class="text-center">
                 <input
-                  class="btn btn-primary"
+                  class="btn btn-primary mt-10"
                   type="submit"
                   value="Register"
                   style="width: 10rem"

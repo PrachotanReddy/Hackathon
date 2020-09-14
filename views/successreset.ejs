@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset | winnovation</title>
+  </head>
+  <body>
+    <h1>Done!</h1>
+    <p>
+      Your password was renewed. Redirecting you to the login page in
+      <span id="countdown"></span>
+    </p>
+    <script>
+      let timerNumber = 11
+      function countdown() {
+        timerNumber -= 1
+        document.getElementById('countdown').innerHTML = timerNumber
+        if (timerNumber === 0) {
+          window.location.replace('/getstarted')
+        }
+      }
+    </script>
+  </body>
+</html>

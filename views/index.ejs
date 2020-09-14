@@ -132,11 +132,6 @@
             nemo
             voluptatibus reiciendis rem voluptate.
           </p>
-          <div class="row">
-            <div class="col-12 col-md-6 col-lg-4">
-              <h4>Current round: <span class="text-secondary">1</span></h4>
-            </div>
-          </div>
           <% if(teamMembers.length > 0) { %>
           <h4 class="m-0 p-0">Team Members</h4>
           <div class="row pb-0 mb-0">
@@ -146,6 +141,12 @@
             </div>
             <% } %>
           </div>
+          <% } %>
+          <% if(participation === 'team' && teamMembers.length === 0) { %>
+              <h4>Team: <span class="text-danger">incomplete</span></h4>
+          <% } %>
+          <% if(teamMembers.length > 0 && participation === 'team') { %>
+              <h4>Team: <span class="text-success">complete</span></h4>
           <% } %>
           <% if(submission) { %>
           <div class="row">
@@ -164,9 +165,9 @@
         </div>
       </div>
       <div id="announcement" class="container announcementCard" style="height: 100%;width: 100%;">
-        <h3 class="text-center w-full m-0 p-0 mt-20">
-          <span class="font-weight-bold">Announcements</span>
-        </h3>
+        <div class="text-center card mt-20">
+          <h3 class="font-weight-bold">Announcements</h3>
+        </div>
         <div class="container" id="container-holder">
 
         </div>
@@ -183,28 +184,28 @@
               <% } else if (participation == "business"){ %>
               a Business
               <% } %>
-              . This tab is not meant for you</p>
+              . This tab is not meant for you.</p>
             <% } else { %>
             <% if (teamMembers[0]) { %>
             <div class="form-row row-eq-spacing-sm">
               <div class="col-12 col-md-6">
-                <label for="Teammate1" class="required">Teammate 1</label>
-                <input type="text" class="form-control" disabled="disabled" id="Teammate1" name="teammate1"
+                <label for="Teammate1dis" class="required">Teammate 1</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate1dis" name="teammate1"
                   <%="placeholder="%><%= teamMembers[0] %> required="required">
               </div>
               <div class="col-12 col-md-6">
-                <label for="Teammate2" class="required">Teammate 2</label>
-                <input type="text" class="form-control" disabled="disabled" id="Teammate2" name="teammate2"
+                <label for="Teammate2dis">Teammate 2</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate2dis" name="teammate2"
                   <%="placeholder="%><%= teamMembers[1] %>>
               </div>
               <div class="col-12 col-md-6">
-                <label for="Teammate3" class="required">Teammate 3</label>
-                <input type="text" class="form-control" disabled="disabled" id="Teammate3" name="teammate3"
+                <label for="Teammate3dis">Teammate 3</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate3dis" name="teammate3"
                   <%="placeholder="%><%= teamMembers[2] %>>
               </div>
               <div class="col-12 col-md-6">
-                <label for="Teammate4" class="required">Teammate 4</label>
-                <input type="text" class="form-control" disabled="disabled" id="Teammate2" name="teammate4"
+                <label for="Teammate4dis">Teammate 4</label>
+                <input type="text" class="form-control" disabled="disabled" id="Teammate4dis" name="teammate4"
                   <%="placeholder="%><%= teamMembers[3] %>>
               </div>
             </div>
@@ -220,15 +221,15 @@
                     required="required">
                 </div>
                 <div class="col-12 col-md-6">
-                  <label for="Teammate2" class="required">Teammate 2</label>
+                  <label for="Teammate2">Teammate 2</label>
                   <input type="text" class="form-control" id="Teammate2" placeholder="Second Teammate" name="teammate2">
                 </div>
                 <div class="col-12 col-md-6">
-                  <label for="Teammate3" class="required">Teammate 3</label>
+                  <label for="Teammate3">Teammate 3</label>
                   <input type="text" class="form-control" id="Teammate3" placeholder="Third Teammate" name="teammate3">
                 </div>
                 <div class="col-12 col-md-6">
-                  <label for="Teammate4" class="required">Teammate 4</label>
+                  <label for="Teammate4">Teammate 4</label>
                   <input type="text" class="form-control" id="Teammate2" placeholder="Fourth Teammate" name="teammate4">
                 </div>
               </div>
@@ -244,82 +245,11 @@
       </div>
       <div id="problem" class="container displayCardInformation" style="width: 100%;">
         <div class="card border-0 bg-transparent">
-          <h3 class="w-full text-center">
+          <h3 class="card text-center">
             <span class="font-weight-bold">Problem Statements</span>
           </h3>
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <div class="card">
-                <h2 class="card-title font-weight-bold">
-                  Problem Statement 1
-                </h2>
-                <p class="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
-                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
-                  dicta expedita suscipit!
-                </p>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="card">
-                <h2 class="card-title font-weight-bold">
-                  Problem Statement 1
-                </h2>
-                <p class="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
-                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
-                  dicta expedita suscipit!
-                </p>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="card">
-                <h2 class="card-title font-weight-bold">
-                  Problem Statement 1
-                </h2>
-                <p class="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
-                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
-                  dicta expedita suscipit!
-                </p>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="card">
-                <h2 class="card-title font-weight-bold">
-                  Problem Statement 1
-                </h2>
-                <p class="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
-                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
-                  dicta expedita suscipit!
-                </p>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="card">
-                <h2 class="card-title font-weight-bold">
-                  Problem Statement 1
-                </h2>
-                <p class="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
-                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
-                  dicta expedita suscipit!
-                </p>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="card">
-                <h2 class="card-title font-weight-bold">
-                  Problem Statement 1
-                </h2>
-                <p class="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima dignissimos aut ab recusandae
-                  pariatur rem et quidem repellendus, laborum dolor illum porro nemo eum praesentium eveniet tempora
-                  dicta expedita suscipit!
-                </p>
-              </div>
-            </div>
+          <div class="row" id="problem-placeholder">
+            
           </div>
         </div>
       </div>
@@ -335,12 +265,9 @@
                   <select class="form-control form-control-lg w-full" id="select-problem-statement" name="problemSelect"
                     required>
                     <option value="" selected="selected" disabled="disabled">Select a problem statement</option>
-                    <option value="statement1">Statement 1</option>
-                    <option value="statement2">Statement 2</option>
-                    <option value="statement3">Statement 3</option>
-                    <option value="statement4">Statement 4</option>
-                    <option value="statement5">Statement 5</option>
-                    <option value="statement6">Statement 6</option>
+                    <% statements.forEach(element => { %>
+                      <option value="<%= element %>"><%= element.heading %></option>
+                    <% }); %>
                   </select>
                 </div>
               </div>
@@ -392,6 +319,7 @@
   </div>
   <!-- Halfmoon JS -->
   <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="./scripts/dashboard.js"></script>
 </body>
 

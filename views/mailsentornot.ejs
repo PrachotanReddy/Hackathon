@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset | wInnovations</title>
+    <link
+      href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/css/halfmoon.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+      crossorigin="anonymous"
+    />
+        <style>
+      body {
+        background-image: url('../../resources/login.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="content-wrapper d-flex flex-column justify-content-center">
+        <div class="p-20 mx-auto w-full w-md-three-quarter w-lg-quarter"
+          id="full-page" style="background-color: rgba(0, 0, 0, 0.7)">
+    
+          <div id="inputs-checker" class="text-center">
+                  <% if(msgCode === 0){ %>
+                        <h2 class="text-center text-white font-weight-bold">Error</h2>
+                        <i class="fas fa-times-circle text-danger" style="font-size: 10rem;"></i>
+                        <p class="text-white"> 
+                              There was an error sending the email, please try again. This was an error from our side.
+                        </p>
+                  <% } %>
+                  <% if(msgCode === 1) { %>
+                        <h2 class="text-center text-white font-weight-bold">Sent</h2>
+                        <i class="far fa-check-circle text-success" style="font-size: 10rem;"></i>
+                        <p class="text-white">
+                              If the email you entered exists in our database, the email with the reset link would reach your inbox. <span class="font-weight-bold"><br />Remember: </span> The link is valid only for 1 hours
+                        </p>
+                  <% } %>
+                  <% if(msgCode === 2) { %>
+                        <h2 class="text-center text-white font-weight-bold">Oops</h2>
+                        <i class="fas fa-exclamation-triangle text-secondary" style="font-size: 10rem;"></i>
+                        <p class="text-white">
+                              We have already sent a mail to that mail. If you cannot see it in your inbox, check your spam folder. We can send an email only after the previous link expires.
+                        </p>
+                  <% } %>
+                  <% if(msgCode === 3) { %>
+                        <h2 class="text-center text-white font-weight-bold">Error</h2>
+                        <i class="fas fa-times-circle text-danger" style="font-size: 10rem;"></i>
+                        <p class="text-white"> 
+                              This option is not available for this user. Looks like you did a social sign in. You cannot reset your password.
+                        </p>
+                  <% } %>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.3/js/halfmoon.min.js"></script>
+  </body>
+</html>

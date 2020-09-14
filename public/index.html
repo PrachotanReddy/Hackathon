@@ -17,11 +17,11 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./style/home.css" />
-    <style></style>
   </head>
   <body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
     <script>
       function removeLoader() {
+        renderProblems()
         document.getElementById('loader').style.display = 'none'
         document.getElementById('page-wrapper').style.display = 'initial'
       }
@@ -34,6 +34,22 @@
                   xhttp.send();
                   document.getElementById('message').innerText = "Added successfully"
             }
+      }
+      async function renderProblems() {
+      document.getElementById('problem-placeholder').innerHTML = "";
+      axios.get('/problems').then(response => {
+        response.data.forEach((recievedData) => {
+          let announceContent = `<div class="card bg-transparent text-light col-12 col-md-4 border-light">
+                                    <div class="card-body">
+                                      <h4 class="card-title text-warning">${recievedData.heading}</h4>
+                                      <p class="card-text">
+                                        ${recievedData.description}
+                                      </p>
+                                    </div>
+                                  </div>`
+            document.getElementById('problem-placeholder').innerHTML += announceContent
+          })
+        })
       }
     </script>
 
@@ -203,13 +219,12 @@
             Problem Statements
           </h2>
           <h2 class="d-md-none font-weight-bold">Problem Statements</h2>
-          <div class="row mt-5 d-flex">
+          <div class="row mt-5 d-flex" id="problem-placeholder">
             <div
               class="card bg-transparent text-light col-12 col-md-4 border-light"
             >
               <div class="card-body">
-                <h5 class="card-title">Problem Statement 1</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Short Title 1</h6>
+                <h4 class="card-title text-warning">Problem Statement 1</h4>
                 <p class="card-text">
                   Aliquam et turpis nec enim congue placerat. Aenean laoreet
                   tellus lectus, non venenatis mi faucibus in. Integer augue
@@ -218,7 +233,6 @@
                   aptent taciti sociosqu ad litora torquent per conubia nostra,
                   per inceptos himenaeos.
                 </p>
-                <a href="#" class="card-link text-warning">Example link</a>
               </div>
             </div>
             <div
@@ -226,7 +240,6 @@
             >
               <div class="card-body">
                 <h5 class="card-title">Problem Statement 2</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Short Title 2</h6>
                 <p class="card-text">
                   Aliquam et turpis nec enim congue placerat. Aenean laoreet
                   tellus lectus, non venenatis mi faucibus in. Integer augue
@@ -235,7 +248,6 @@
                   aptent taciti sociosqu ad litora torquent per conubia nostra,
                   per inceptos himenaeos.
                 </p>
-                <a href="#" class="card-link text-warning">Example link</a>
               </div>
             </div>
             <div
@@ -243,7 +255,6 @@
             >
               <div class="card-body">
                 <h5 class="card-title">Problem Statement 3</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Short Title 3</h6>
                 <p class="card-text">
                   Aliquam et turpis nec enim congue placerat. Aenean laoreet
                   tellus lectus, non venenatis mi faucibus in. Integer augue
@@ -252,7 +263,6 @@
                   aptent taciti sociosqu ad litora torquent per conubia nostra,
                   per inceptos himenaeos.
                 </p>
-                <a href="#" class="card-link text-warning">Example link</a>
               </div>
             </div>
             <div
@@ -389,7 +399,7 @@
             <div class="d-flex flex-column justify-content-center">
                   <p class="text-light">Signup for our newsletter to recieve latest updates</p>
             <div class="d-flex flex-column flex-md-row justify-content-center w-75 mx-auto">
-            <input type="email" id="subscribeEmail" class="form-control w-75 mx-auto" name="newsletter_email" />
+            <input type="email" id="subscribeEmail" class="form-control w-75 mx-auto" name="newsletter_email" autocomplete="off" />
             <button type="button" class="btn btn-warning mx-auto" onclick="sendFormData()">SignUp</button>
             </div>
             <p id="message" class="text-success"></p>
@@ -405,7 +415,7 @@
         </div>
       </footer>
     </div>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

@@ -8,19 +8,36 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 const GitHubStrategy = require('passport-github2').Strategy
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const CONNECTION_URL = process.env.DATABASE_URL
 let port = process.env.PORT || 3000
+const nodemailer = require('nodemailer')
+const transporter = nodemailer.createTransport({
+  host: "smtp.yandex.com",
+  port: 465,
+  auth: {
+    user: 'userverification@winnovations.in',
+    pass: 'ktipajbkaidvyjmu',
+  },
+  secure: true,
+  dkim: {
+    domainName: "winnovations.in",
+    keySelector: 'selector1',
+    privateKey: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMNUYwoLIaAPe0m27WXmIuLxVWCGY1EySGNzPQcXy41pP57RL9zNF6drqM+iKgw9l+5l6qNxVYoRSnD+VkQLwUZZN5/tmw75pX/kV92qiXtaTbk47OvAY1izXHTaxcbffZZ+SX7NZJMqhdCyH4P4bzrJht5Y9/zf1CjASWKDL8hwIDAQAB"
+  }
+});
+
 
 //importing logging route
-const logger = require('./logger').Logger
+const logger = require('./routes/logger').Logger
 
 //configuration for passport local
 const initializePassport = require('./auth-routes/passport-config')
 const { ObjectId } = require('mongodb')
+const { render } = require('ejs')
 initializePassport(
   passport,
   (email) =>
@@ -60,6 +77,7 @@ passport.use(
               score: 0,
               submission: '',
               oAuthMethod: 'google',
+              verified: true
             })
             await collectionLogin
               .findOne({ email: profile.email })
@@ -104,6 +122,7 @@ passport.use(
               score: 0,
               submission: '',
               oAuthMethod: 'github',
+              verified: true
             })
             await collectionLogin
               .findOne({ email: profile.emails[0].value })
@@ -202,11 +221,33 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'))
 
+function checkverification(req, res, next) {
+  console.log(req.session.passport.user)
+  collectionLogin.findOne({email: req.session.passport.user}, async (err, obj) => {
+    if(obj.verified) {
+      console.log('Verification complete')
+      next()
+    }
+    else {
+      console.log('Verification incomplete')
+      res.render('verifyotp', {
+        error: false,
+        msg: ''
+      })
+    }
+  })
+}
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html')
 })
 
-app.get('/dashboard', checkAuthenticated, async (req, res) => {
+
+//create a route to send OTP mails and update the database for the same
+
+app.use('/verifiyotp', checkAuthenticated, require('./routes/verification'))
+
+app.get('/dashboard', [checkAuthenticated, checkverification], async (req, res) => {
   collectionLogin
     .findOne({ email: req.session.passport.user })
     .then(async function (user) {
@@ -226,6 +267,7 @@ app.get('/dashboard', checkAuthenticated, async (req, res) => {
             email: `${req.session.passport.user}`,
           },
           function (err, doc) {
+            collectionProblem.find().toArray((error, item) => {
             if (eventDetails.round == 1) {
               res.render('index', {
                 name: doc.teamName,
@@ -235,12 +277,14 @@ app.get('/dashboard', checkAuthenticated, async (req, res) => {
                 scoring: doc.score,
                 submission: doc.submission,
                 teamMembers: doc.teamMembers,
+                statements: item
               })
             } else if (eventDetails.round == 2) {
               res.render('index1')
             } else if (eventDetails.round == 3) {
               res.render('index2')
             }
+            })
           }
         )
       }
@@ -270,6 +314,17 @@ app.post('/submissionRound_one', checkAuthenticated, (req, res) => {
       res.redirect('/dashboard')
     }
   )
+})
+
+app.use('/passwordreset', require('./routes/forgot'))
+
+app.use('/problemstatement', checkAuth, require('./routes/problem'))
+
+app.get('/problems', async(req, res) => {
+  await collectionProblem.find().toArray(async (err, doc) => {
+    if (err) throw err;
+    res.send(doc)
+  })
 })
 
 app.get('/newsletter/:email', (req, res) => {
@@ -370,8 +425,11 @@ app.get('/giveScores', checkAuth, (req, res) => {
 })
 
 app.get('/getAdminNews', checkAuth, async (req, res) => {
-  await collectionAnnouncement.find().toArray(async (err, announcements) => {
-    res.send(announcements)
+  let data = {}
+  await collectionAnnouncement.find({}).toArray(async (err, announcements) => {
+    data = await announcements
+    console.log('THis is data ', data)
+    res.send(data)
   })
 })
 
@@ -396,6 +454,7 @@ app.get('/getAdminParticipants', checkAuth, (req, res) => {
 app.get('/getstarted', checkNotAuthenticated, (req, res) => {
   res.render('getstarted')
 })
+
 app.post(
   '/login',
   checkNotAuthenticated,
@@ -408,8 +467,11 @@ app.post(
 
 app.get('/admindashboard', checkAuth, (req, res) => {
   collectionLogin.find().toArray(async (err, participants) => {
-    res.render('admindashboard', {
+    await collectionProblem.find().toArray((err, doc) => {
+      res.render('admindashboard', {
       data: participants,
+      problemstatements: doc
+    })
     })
   })
 })
@@ -539,6 +601,66 @@ app.get('/getstarted', checkNotAuthenticated, (req, res) => {
   res.render('getstarted')
 })
 
+async function sendOTP(email) {
+  let pin = Math.floor(100000 + Math.random() * 900000)
+  let mailingOptions = {
+    from: 'userverification@winnovations.in',
+    to: email,
+    subject: 'Account verification',
+    html: `<h1>Verify your account</h1>
+    <p>You signed in with the email address ${email} on our website www.winnovations.in just now. Enter the OTP to complete the process. If it was not you, you can safely ignore this mail. <span style="font-weight: bold">${pin}</span> is you OTP that you need to sign in with.</p>
+    
+    <p style="font-style: italic">-team Winnovations</p>`
+  }
+  transporter.sendMail(mailingOptions, function (error, info) {
+    if(error) {
+      throw error;
+    }
+    console.log(info)
+  })
+  collectionOTP.insertOne({
+        email: email,
+        code: pin,
+        date: Date.now()
+    })
+    return 'done'
+}
+
+async function resendOTP(email) {
+  let pin = Math.floor(100000 + Math.random() * 900000)
+  let mailingOptions = {
+    from: 'userverification@winnovations.in',
+    to: email,
+    subject: 'Account verification',
+    html: `<h1>OTP</h1>
+              <p>You asked for a new OTP, and here it is.</p>
+              <h4 style:"font-weight: bold">${pin}</h4>
+    `
+  }
+  transporter.sendMail(mailingOptions, function (error, info) {
+    if(error) {
+      throw error;
+    }
+    console.log(info)
+  })
+  collectionOTP.updateOne({email: email}, {$set: {code: pin, date: Date.now()}}, (error, doc) => {
+    return 'done'
+  })
+}
+
+app.get('/resendOTP', async (req, res) => {
+  try {
+  console.log('Resending OTP')
+  let responseOTP = resendOTP(req.session.passport.user);
+    res.render('verifyotp', {
+      msg: `The OTP was sent to ${req.session.passport.user}`,
+      error: ''
+    })
+  } catch(err) {
+    console.log(err)
+  }
+})
+
 app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
     collectionLogin
@@ -554,6 +676,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       })
       .then(function (doc) {
         if (!doc) {
+          sendOTP(req.body.email)
           let hashedPassword = bcrypt.hashSync(req.body.password, 10)
           collectionLogin.insertOne({
             email: req.body.email,
@@ -565,12 +688,15 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
             score: 0,
             submission: '',
             oAuthMethod: 'local',
+            verified: false
           })
           res.redirect('/getstarted')
         } else {
           res.render('alreadyExists')
         }
       })
+
+
   } catch (e) {
     res.redirect('/getstarted')
   }
@@ -579,6 +705,10 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 app.delete('/logout', (req, res) => {
   req.logOut()
   res.redirect('/getstarted')
+})
+
+app.get('*', (req, res) => {
+  res.render('error')
 })
 
 app.listen(port, () => {
@@ -598,6 +728,9 @@ app.listen(port, () => {
       collectionEvent = await database.collection('event_details')
       collectionAnnouncement = await database.collection('announcements')
       collectionNewsletter = await database.collection('newsletter')
+      collectionReset = await database.collection('resetdatabase')
+      collectionProblem = await database.collection('problem_statement')
+      collectionOTP = await database.collection('otp_verification')
       console.log('Connected to mongoDB Atlas')
     }
   )
