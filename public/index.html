@@ -1,435 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home | Hackathon</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="./style/home.css" />
-  </head>
-  <body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
-    <script>
-      function removeLoader() {
-        renderProblems()
-        document.getElementById('loader').style.display = 'none'
-        document.getElementById('page-wrapper').style.display = 'initial'
-      }
-      function sendFormData() {
-            let valueOfEmail = document.getElementById('subscribeEmail').value;
-            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if(re.test(valueOfEmail)) {
-                  var xhttp = new XMLHttpRequest();
-                  xhttp.open("GET", "/newsletter/"+valueOfEmail, true);
-                  xhttp.send();
-                  document.getElementById('message').innerText = "Added successfully"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home | Hackathon</title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+            integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+        <link rel="stylesheet" href="./style/home.css" />
+    </head>
+    <body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
+        <script>
+            function removeLoader() {
+                renderProblems();
+                renderNotification();
+                document.getElementById("loader").style.display = "none";
+                const vid = document.getElementById("water-video");
+                vid.playbackRate = 0.7;
+                document.getElementById("page-wrapper").style.display =
+                    "initial";
             }
-      }
-      async function renderProblems() {
-      document.getElementById('problem-placeholder').innerHTML = "";
-      axios.get('/problems').then(response => {
-        response.data.forEach((recievedData) => {
-          let announceContent = `<div class="card bg-transparent text-light col-12 col-md-4 border-light">
-                                    <div class="card-body">
-                                      <h4 class="card-title text-warning">${recievedData.heading}</h4>
-                                      <p class="card-text">
-                                        ${recievedData.description}
-                                      </p>
-                                    </div>
-                                  </div>`
-            document.getElementById('problem-placeholder').innerHTML += announceContent
-          })
-        })
-      }
-    </script>
+            function renderNotification() {
+                window.cookieconsent.initialise({
+                    container: document.getElementById("content"),
+                    palette: {
+                        popup: { background: "#fefefe" },
+                        button: { background: "#00796b" },
+                    },
+                    revokable: true,
+                    onStatusChange: function (status) {
+                        console.log(
+                            this.hasConsented()
+                                ? "enable cookies"
+                                : "disable cookies"
+                        );
+                    },
+                    law: {
+                        regionalLaw: false,
+                    },
+                    location: true,
+                    content: {
+                        header: "Cookie Policy",
+                        message:
+                            "We use cookies to enhance your experience on this website. If you want to know more about our cookie policy, ",
+                        dismiss: "Understood",
+                        allow: "Allow cookies",
+                        deny: "Decline",
+                        link: "click here",
+                        href: "/privacypolicy",
+                        close: "&#x274c;",
+                        policy: "Cookie Policy",
+                        target: "_blank",
+                    },
+                });
+            }
 
-    <div
-      class="loader-animation-holder"
-      id="loader"
-      style="width: 100%; height: 100%"
-    >
-      <div class="wrapper">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
-        <span class="text-dark">Loading</span>
-      </div>
-    </div>
-    <div id="page-wrapper">
-      <nav
-        class="navbar fixed-top navbar-expand-lg navbar-dark pr-5"
-        id="navbar"
-        style="background-color: rgba(0, 0, 0, 0.5)"
-      >
-        <a class="navbar-brand" href="#">Hackathon</a>
-        <button
-          class="navbar-toggler border-0"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#problem">Problem Statements</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#start">Get Started</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <!-- contains the video -->
-      <div class="container-fluid">
-        <video muted autoplay loop id="water-video">
-          <source src="./resources/bubbles.mp4" type="video/mp4" />
-        </video>
-      </div>
+            function sendFormData() {
+                let valueOfEmail = document.getElementById("subscribeEmail")
+                    .value;
+                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if (re.test(valueOfEmail)) {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.open("GET", "/newsletter/" + valueOfEmail, true);
+                    xhttp.send();
+                    document.getElementById("message").innerText =
+                        "Added successfully";
+                } else {
+                    document.getElementById("message").innerText =
+                        "That is not a valid format";
+                }
+            }
 
-      <!-- contains the did you know -->
-      <div
-        class="container-fluid d-flex flex-column justify-content-center bg-black-gradient"
-        id="home"
-        style="height: 100vh"
-      >
-        <h1
-          class="pb-0 mb-0 text-center d-none d-md-block font-weight-bold"
-          style="
-            font-size: 10rem;
-            color: rgb(255, 255, 255);
-            font-family: 'Bebas Neue', cursive;
-          "
+            async function renderProblems() {
+                document.getElementById("problem-placeholder").innerHTML = "";
+                axios.get("/problems").then((response) => {
+                    response.data.forEach((recievedData) => {
+                        let announceContent = ` <div class="card" style="background-color: #00796b">
+                                                              <div class="card-header text-light">${recievedData.heading}</div>
+                                                              <div class="card-body bg-white w-100">
+                                                                <p class="card-text">${recievedData.description}</p>
+                                                              </div>
+                                                            </div>`;
+                        document.getElementById(
+                            "problem-placeholder"
+                        ).innerHTML += announceContent;
+                    });
+                });
+            }
+        </script>
+        <div
+            class="loader-animation-holder"
+            id="loader"
+            style="width: 100%; height: 100%"
         >
-          WINnovations
-        </h1>
-        <h1
-          class="pb-0 mb-0 text-center d-block d-md-none font-weight-bold"
-          style="
-            font-size: 3rem;
-            color: rgb(255, 255, 255);
-            font-family: 'Bebas Neue', cursive;
-          "
-        >
-          WINnovations
-        </h1>
-        <p
-          class="p-0 m-0 text-white text-center font-weight-bold layer"
-          style="font-size: 1.5rem"
-          data-params="30,500,10000"
-        >
-          The Innovation Portal Under the
-          <span class="text-primary">Smart Water Hub</span> Initiative
-        </p>
-        <div class="icon-scroll"></div>
-        <p class="scroll-message d-none d-md-block text-white">Scroll Down</p>
-      </div>
+            <div class="wrapper">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="shadow"></div>
+                <div class="shadow"></div>
+                <div class="shadow"></div>
+                <span class="text-dark">Loading</span>
+            </div>
+        </div>
+        <div id="page-wrapper">
+            <nav
+                class="navbar navbar-expand-none fixed-top navbar-light"
+                id="navbar"
+            >
+                <a
+                    class="navbar-brand py-1 px-3 bg-white"
+                    style="color: #48a999; border-radius: 20px"
+                    href="#"
+                    >WINnovations</a
+                >
+                <button
+                    class="navbar-toggler rounded-circle p-2"
+                    style="background-color: rgba(255, 255, 255)"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav text-center bg-white">
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="#about"
+                                >About</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary" href="#problem"
+                                >Problem Statements</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-secondary"
+                                href="/getstarted"
+                                >Login</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-secondary"
+                                href="/getstarted#register"
+                                >Register</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div
+                class="container-fluid d-flex flex-column justify-content-center"
+                style="
+                    min-height: 100vh;
+                    max-width: 100vw;
+                    background-color: rgba(0, 0, 0, 0.3);
+                "
+            >
+                <div class="container">
+                    <video muted autoplay loop id="water-video">
+                        <source
+                            src="./resources/videoCover.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+                <h1
+                    class="text-center d-none d-lg-block animate__animated flash mb-0 pb-0"
+                    style="color: #00796b; font-size: 10rem"
+                >
+                    WINnovations
+                </h1>
+                <h1
+                    class="text-center d-none d-md-block d-lg-none animate__animated flash"
+                    style="color: #00796b; font-size: 6rem"
+                >
+                    WINnovations
+                </h1>
+                <h1
+                    class="text-center d-md-none animate__animated flash"
+                    style="color: #00796b"
+                >
+                    WINnovations
+                </h1>
+                <h3 class="text-center text-white mt-0 pt-0">
+                    The Innovation Portal under the Smart Water Hub Initiative
+                </h3>
+                <h4 class="text-center" style="color: #00796b">
+                    Aspire <span class="text-white">|</span> Innovate
+                    <span class="text-white">|</span> Accelerate
+                </h4>
+            </div>
+            <div
+                class="d-flex flex-column bg-white justify-content-center pt-5"
+                id="about"
+                style="min-height: 80vh"
+            >
+                <div
+                    class="d-flex flex-column flex-md-row-reverse p-4 pt-0 mt-0"
+                >
+                    <div
+                        class="col-12 col-md-7 font-weight-light d-flex flex-column justify-content-center"
+                        f
+                        style="font-size: 1.2rem"
+                    >
+                        <h1
+                            class="display-4 d-md-none pb-0 mb-0"
+                            style="color: #00796b"
+                        >
+                            About Us
+                        </h1>
+                        <h1
+                            class="display-2 d-none d-md-block pb-0 mb-0"
+                            style="color: #00796b"
+                        >
+                            About Us
+                        </h1>
+                        <p>
+                            We believe everyone has the power to change the
+                            world – and find solutions to the biggest challenges
+                            in our time. But to make this happen, we need to
+                            stand together. Our mission is to build a community
+                            where the best talent could meet and collaborate
+                            towards future innovations. <br /><br />
+                            Whether you are an individual, an aspiring startup,
+                            entrepreneur or a corporation with the aspiration to
+                            make things better – you are welcome to join!
+                        </p>
+                    </div>
+                    <div
+                        class="col-12 col-md-5 d-flex flex-column justify-content-center"
+                    >
+                        <div
+                            class="container h-100 about-us-image d-flex flex-column justify-content-center"
+                        >
+                            <img
+                                class="img-fluid"
+                                src="./resources//worker.jpg"
+                                alt=""
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <!-- contains the about section -->
-      <div
-        class="container-fluid pt-5 bg-black"
-        id="about"
-        style="min-height: 100vh"
-      >
-        <div
-          class="container text-white d-flex flex-column-reverse flex-md-row h-100"
-        >
-          <div
-            class="col-12 col-md-7 d-flex flex-column justify-content-center m-0 p-0"
-          >
-            <h1 class="d-none d-md-block display-3 font-weight-bold">
-              WINnovations
-            </h1>
-            <h1 class="d-md-none font-weight-bold">WINnovations</h1>
-            <p class="p-0 m-0 mb-5">
-              We believe everyone has the power to change the world – and find
-              solutions to the biggest challenges in our time. But to make this
-              happen, we need to stand together. Our mission is to build a
-              community where the best talent could meet and collaborate towards
-              future innovations. Whether you are an individual, an aspiring
-              startup, entrepreneur or a corporation with the aspiration to make
-              things better – you are welcome to join! WINnovations is open to
-              all skillsets and ideas: aspiring teams and individuals, corporate
-              teams and students, ideas and projects. We are building a culture
-              of innovation through collaboration.
-            </p>
-            <div class="row text-white justify-content-around mt-2">
-              <div
-                class="d-flex flex-column justify-content-center text-center"
-              >
-                <i class="fas fa-users mb-3" style="font-size: 3rem"></i>
-                <p>150+<br />Participants</p>
-              </div>
-              <div
-                class="d-flex flex-column justify-content-center text-center"
-              >
-                <i class="far fa-building mb-3" style="font-size: 3rem"></i>
-                <p>12+<br />Organizations</p>
-              </div>
-              <div
-                class="d-flex flex-column justify-content-center text-center"
-              >
-                <i
-                  class="fas fa-project-diagram mb-3"
-                  style="font-size: 3rem"
-                ></i>
-                <p>15+<br />Projects</p>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-12 col-md-5 d-none d-md-flex flex-column justify-content-center"
-          >
-            <img
-              class="img-fluid"
-              src="./resources/tunnel.jpg"
-              alt="Open end of a tunnel"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        class="container-fluid pt-5 bg-black"
-        id="problem"
-        style="min-height: 100vh"
-      >
-      <!-- Container for problem statements -->
-        <div class="container mt-5 text-light">
-          <h2 class="d-none d-md-block display-4 font-weight-bold">
-            Problem Statements
-          </h2>
-          <h2 class="d-md-none font-weight-bold">Problem Statements</h2>
-          <div class="row mt-5 d-flex" id="problem-placeholder">
-            <div
-              class="card bg-transparent text-light col-12 col-md-4 border-light"
-            >
-              <div class="card-body">
-                <h4 class="card-title text-warning">Problem Statement 1</h4>
-                <p class="card-text">
-                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
-                  tellus lectus, non venenatis mi faucibus in. Integer augue
-                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
-                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
-                  aptent taciti sociosqu ad litora torquent per conubia nostra,
-                  per inceptos himenaeos.
+            <div class="d-flex flex-column bg-white justify-content-center p-5">
+                <h2 class="d-md-none pl-2d-4 pb-0 mb-0" style="color: #00796b">
+                    How to get started?
+                </h2>
+                <h2
+                    class="display-4 d-none d-md-block pb-0 mb-0"
+                    style="color: #00796b"
+                >
+                    How to get started?
+                </h2>
+                <p class="pb-0 mb-0">
+                    WINnovations is open to all skillsets and ideas: aspiring
+                    teams and individuals, corporate teams and students, ideas
+                    and projects. We are building a culture of innovation
+                    through collaboration.
                 </p>
-              </div>
-            </div>
-            <div
-              class="card bg-transparent text-light col-12 col-md-4 border-light"
-            >
-              <div class="card-body">
-                <h5 class="card-title">Problem Statement 2</h5>
-                <p class="card-text">
-                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
-                  tellus lectus, non venenatis mi faucibus in. Integer augue
-                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
-                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
-                  aptent taciti sociosqu ad litora torquent per conubia nostra,
-                  per inceptos himenaeos.
-                </p>
-              </div>
-            </div>
-            <div
-              class="card bg-transparent text-light col-12 col-md-4 border-light"
-            >
-              <div class="card-body">
-                <h5 class="card-title">Problem Statement 3</h5>
-                <p class="card-text">
-                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
-                  tellus lectus, non venenatis mi faucibus in. Integer augue
-                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
-                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
-                  aptent taciti sociosqu ad litora torquent per conubia nostra,
-                  per inceptos himenaeos.
-                </p>
-              </div>
-            </div>
-            <div
-              class="card bg-transparent text-light col-12 col-md-4 border-light"
-            >
-              <div class="card-body">
-                <h5 class="card-title">Problem Statement 4</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Short Title 4</h6>
-                <p class="card-text">
-                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
-                  tellus lectus, non venenatis mi faucibus in. Integer augue
-                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
-                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
-                  aptent taciti sociosqu ad litora torquent per conubia nostra,
-                  per inceptos himenaeos.
-                </p>
-                <a href="#" class="card-link text-warning">Example link</a>
-              </div>
-            </div>
-            <div
-              class="card bg-transparent text-light col-12 col-md-4 border-light"
-            >
-              <div class="card-body">
-                <h5 class="card-title">Problem Statement 5</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Short Title 5</h6>
-                <p class="card-text">
-                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
-                  tellus lectus, non venenatis mi faucibus in. Integer augue
-                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
-                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
-                  aptent taciti sociosqu ad litora torquent per conubia nostra,
-                  per inceptos himenaeos.
-                </p>
-                <a href="#" class="card-link text-warning">Example link</a>
-              </div>
-            </div>
-            <div
-              class="card bg-transparent text-light col-12 col-md-4 border-light"
-            >
-              <div class="card-body">
-                <h5 class="card-title">Problem Statement 6</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Short Title 6</h6>
-                <p class="card-text">
-                  Aliquam et turpis nec enim congue placerat. Aenean laoreet
-                  tellus lectus, non venenatis mi faucibus in. Integer augue
-                  enim, scelerisque quis dapibus nec, rhoncus vel felis. Sed
-                  vehicula ipsum nisi, ac laoreet ante placerat nec. Class
-                  aptent taciti sociosqu ad litora torquent per conubia nostra,
-                  per inceptos himenaeos.
-                </p>
-                <a href="#" class="card-link text-warning">Example link</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- contains the link and details -->
-      <div
-        class="container-fluid pt-5 pb-20 bg-black px-5 d-flex flex-column justify-content-center"
-        id="start"
-        style="min-height: 100vh; height: max-content;"
-      >
-        <div
-          class="row-fluid mx-auto col-12 col-md-6 text-center text-white pb-20"
-        >
-          <h2 class="d-none d-md-block display-4 font-weight-bold mx-auto">
-            It's time to hack
-          </h2>
-          <h2 class="d-md-none font-weight-bold">It's time to hack</h2>
-          <p class="p-0 m-0 mb-3">
-            Your efforts don't go in vain. Here are the perks you get.
-            <ul class="text-left pb-10">
-                  <li>Put your ideas to implementation with funds and support from the government.</li>
-                  <li>Access to exclusive resources, workshops and infrastructure from WINnovations and its affiliates.</li>
-                  <li>Oppurtunity to work alongside the government and be recognised by start-ups and tech giants.</li>
-                  <li>Goodies and cash prizes for the best innovators.</li>
-            </ul>
-            <h3 class="text-center" style="padding: 25px 2px;">How to participate?</h3>
-            <div class="row d-flex flex-column flex-md-row mt-20">
-                  <div class="col-12 col-md-6 col-lg-3">
-                        <i class="fas fa-mouse-pointer" style="font-size: 3rem;"></i>
-                        <p>Register on our portal</p>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-3">
-                        <i class="fas fa-list" style="font-size: 3rem;"></i>
-                        <p>Choose the problem statement</p>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-3">
-                        <i class="fas fa-tools" style="font-size: 3rem;"></i>
-                        <p>Get working on your submission</p>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-3">
-                        <i class="fas fa-microphone" style="font-size: 3rem;"></i>
-                        <p>Wait for the results</p>
-                  </div>
-            </div>
-          </p>
-          <button
-            type="button"
-            class="btn btn-outline-light mx-auto" style="margin-bottom: 30px;"
-            onclick="window.location.replace('/getstarted')"
-          >
-            Register Now
-          </button>
-        </div>
-      </div>
+                <div class="container-fluid d-flex flex-row">
+                    <div class="col-12 col-lg-8 d-flex flex-column">
+                        <div class="row flex-column flex-md-row mt-4">
+                            <div class="col-12 col-md-2">
+                                <div
+                                    class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
+                                    style="
+                                        background-color: #00796b;
+                                        width: 75px;
+                                        height: 75px;
+                                        border-radius: 50%;
+                                    "
+                                >
+                                    <h1 class="p-0 m-0">1</h1>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-10 pl-3">
+                                <h3 class="text-center text-md-left">
+                                    Tell us who you are
+                                </h3>
+                                <p class="text-center text-md-left">
+                                    Register on our portal. Don't worry, your
+                                    privacy is of utmost concern to us!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row flex-column flex-md-row mt-4">
+                            <div class="col-12 col-md-2">
+                                <div
+                                    class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
+                                    style="
+                                        background-color: #00796b;
+                                        width: 75px;
+                                        height: 75px;
+                                        border-radius: 50%;
+                                    "
+                                >
+                                    <h1 class="p-0 m-0">2</h1>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-10 pl-3">
+                                <h3 class="text-center text-md-left">
+                                    Know what's troubling us
+                                </h3>
+                                <p class="text-center text-md-left">
+                                    View the current statements on your
+                                    dashboard, go through the detailed
+                                    information and the requirements for the
+                                    submission.
+                                </p>
+                            </div>
+                        </div>
 
-      <footer
-        class="page-footer font-small blue pt-4"
-        style="background-color: #000"
-      >
-        <div
-          class="container-fluid text-center text-md-left d-flex flex-column-reverse flex-md-row"
-        >
-          <div
-            class="col-12 col-md-6 pl-md-4 mt-5"
-            style="color: rgb(180, 180, 180)"
-          >
-            <h2>WINnovations</h2>
-            <p>
-              A dedicated technology platform built to drive innovation in a
-              continuous and real time manner. The platform helps accelerate the
-              execution of ideas & facilitates the engagement with external
-              entities
-            </p>
-          </div>
-          <div class="col-12 col-md-6 text-center d-flex flex-column justify-content-center">
-            <img
-              class="img"
-              height="80"
-              src="https://lh3.googleusercontent.com/proxy/yXLw9PwleWj3dULR_HjQ3mEwb5j_Q-B3iKLu6s9OzCb3JoDzPzAVnRg3pNXtVgqQg4A0TLaC0caLGDC9NiOVgYrnIPNbs3EnXQ_GG-9MkK0mExSwpTk"
-              alt="Hackathon logo"
-            />
-            <div class="d-flex flex-column justify-content-center">
-                  <p class="text-light">Signup for our newsletter to recieve latest updates</p>
-            <div class="d-flex flex-column flex-md-row justify-content-center w-75 mx-auto">
-            <input type="email" id="subscribeEmail" class="form-control w-75 mx-auto" name="newsletter_email" autocomplete="off" />
-            <button type="button" class="btn btn-warning mx-auto" onclick="sendFormData()">SignUp</button>
+                        <div class="row flex-column flex-md-row mt-4">
+                            <div class="col-12 col-md-2">
+                                <div
+                                    class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
+                                    style="
+                                        background-color: #00796b;
+                                        width: 75px;
+                                        height: 75px;
+                                        border-radius: 50%;
+                                    "
+                                >
+                                    <h1 class="p-0 m-0">3</h1>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-10 pl-3">
+                                <h3 class="text-center text-md-left">
+                                    Get your hands dirty
+                                </h3>
+                                <p class="text-center text-md-left">
+                                    Understand what we are looking for, get
+                                    working on your submission. Make sure you
+                                    meet the deadlines.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row flex-column flex-md-row mt-4">
+                            <div class="col-12 col-md-2">
+                                <div
+                                    class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
+                                    style="
+                                        background-color: #00796b;
+                                        width: 75px;
+                                        height: 75px;
+                                        border-radius: 50%;
+                                    "
+                                >
+                                    <h1 class="p-0 m-0">4</h1>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-10 pl-3">
+                                <h3 class="text-center text-md-left">
+                                    Sit Back and get working on the next problem
+                                    statement
+                                </h3>
+                                <p class="text-center text-md-left">
+                                    Meanwhile, we'll go through your submission
+                                    and get in touch with you.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-12 col-md-4 d-none d-lg-flex flex-column justify-content-center"
+                    >
+                        <img
+                            class="img-fluid"
+                            src="./resources/illustration.png"
+                            alt=""
+                        />
+                    </div>
+                </div>
             </div>
-            <p id="message" class="text-success"></p>
+
+            <div
+                class="d-flex flex-column bg-white justify-content-center p-5"
+                id="problem"
+            >
+                <h1 class="d-md-none pb-0 mb-0" style="color: #00796b">
+                    Problem Statements
+                </h1>
+                <h1
+                    class="display-4 d-none d-md-block pb-0 mb-0"
+                    style="color: #00796b"
+                >
+                    Problem Statements
+                </h1>
+                <div class="contianer">
+                    <div class="card-columns" id="problem-placeholder"></div>
+                </div>
             </div>
-          </div>
+
+            <div class="d-flex flex-column bg-white justify-content-center p-5">
+                <h2 class="d-md-none pb-0 mb-0" style="color: #00796b">
+                    Perks
+                </h2>
+                <h2
+                    class="display-4 d-none d-md-block pb-0 mb-0"
+                    style="color: #00796b"
+                >
+                    Perks
+                </h2>
+                <p class="pl-2 pl-md-4 pb-0 mb-0">
+                    Your efforts don't go in vain.
+                </p>
+                <div class="row py-5">
+                    <div class="col-12 col-md-3 d-flex flex-column">
+                        <i
+                            class="fas fa-landmark mx-auto mb-3"
+                            style="color: #00796b; font-size: 5rem"
+                        ></i>
+                        <p class="text-center">
+                            Put your ideas to implementation with funds and
+                            support from the government.
+                        </p>
+                    </div>
+
+                    <div class="col-12 col-md-3 d-flex flex-column">
+                        <i
+                            class="fas fa-warehouse mx-auto mb-3"
+                            style="color: #00796b; font-size: 5rem"
+                        ></i>
+                        <p class="text-center">
+                            Access to exclusive resources, workshops and
+                            infrastructure from WINnovations and its affiliates.
+                        </p>
+                    </div>
+
+                    <div class="col-12 col-md-3 d-flex flex-column">
+                        <i
+                            class="fas fa-microchip mx-auto mb-3"
+                            style="color: #00796b; font-size: 5rem"
+                        ></i>
+                        <p class="text-center">
+                            Oppurtunity to work alongside the government and be
+                            recognised by start-ups and tech giants.
+                        </p>
+                    </div>
+
+                    <div class="col-12 col-md-3 d-flex flex-column">
+                        <i
+                            class="fas fa-gift mx-auto mb-3"
+                            style="color: #00796b; font-size: 5rem"
+                        ></i>
+                        <p class="text-center">
+                            Goodies and cash prizes for the best innovators.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <footer
+                class="page-footer font-small blue pt-4"
+                style="background-color: #424242"
+            >
+                <div
+                    class="container-fluid text-center text-md-left d-flex flex-column flex-md-row"
+                >
+                    <div class="col-12 col-md-4 pl-md-4 mt-5">
+                        <h2 class="text-white">WINnovations</h2>
+                        <p class="text-light">
+                            A dedicated technology platform built to drive
+                            innovation in a continuous and real time manner. The
+                            platform helps accelerate the execution of ideas &
+                            facilitates the engagement with external entities
+                        </p>
+                    </div>
+                    <div
+                        class="col-12 col-md-4 d-flex flex-column justify-content-center"
+                    >
+                        <ul class="list-unstyled ml-md-5">
+                            <li>
+                                <p
+                                    class="font-weight-bold text-white mb-0 pb-0"
+                                    style="font-size: 1.5rem"
+                                >
+                                    Links
+                                </p>
+                            </li>
+                            <li>
+                                <a class="text-light" href="/privacypolicy"
+                                    >Privacy Policy</a
+                                >
+                            </li>
+                            <li>
+                                <a class="text-light" href="/termsandcondition"
+                                    >Terms and Conditions</a
+                                >
+                            </li>
+                            <li>
+                                <a class="text-light" href="/contactus"
+                                    >Contact Us</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div
+                        class="col-12 col-md-4 text-center d-flex flex-column justify-content-center"
+                    >
+                        <img
+                            class="img mx-auto"
+                            height="100"
+                            src="https://i.pinimg.com/originals/6a/cf/b6/6acfb65366aea4e21d0d961d02e6fecf.png"
+                            alt="Hackathon logo"
+                        />
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="text-light">
+                                Sign up for our newsletter to recieve latest
+                                updates
+                            </p>
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-center w-75 mx-auto"
+                            >
+                                <input
+                                    type="email"
+                                    id="subscribeEmail"
+                                    class="form-control w-100 w-md-75 mx-auto m-md-0"
+                                    name="newsletter_email"
+                                    autocomplete="off"
+                                />
+                                <button
+                                    type="button"
+                                    class="btn text-white mx-auto m-md-0 mt-2"
+                                    style="background-color: #00796b"
+                                    onclick="sendFormData()"
+                                >
+                                    SignUp
+                                </button>
+                            </div>
+                            <p id="message" class="text-success"></p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="footer-copyright text-center py-3"
+                    style="color: rgb(121, 121, 121)"
+                >
+                    © <span id="yearHolder">2020</span> Copyright:
+                    <span style="color: rgb(180, 180, 180)">WINnovations</span>
+                </div>
+            </footer>
         </div>
-        <div
-          class="footer-copyright text-center py-3"
-          style="color: rgb(121, 121, 121)"
-        >
-          © <span id="yearHolder">2020</span> Copyright:
-          <span style="color: rgb(180, 180, 180)">WINnovations</span>
-        </div>
-      </footer>
-    </div>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+    </body>
 </html>

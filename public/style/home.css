@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&display=swap");
 #water-video {
   position: fixed;
   right: 0;
@@ -6,31 +6,9 @@
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
+  margin: 0;
+  padding: 0;
 }
-.bg-black-gradient {
-  background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.5),
-    rgba(0, 0, 0, 0.6),
-    rgba(0, 0, 0, 0.7),
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.95)
-  );
-  height: 100vh;
-  position: relative;
-}
-.bg-transparent-black {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-.bg-black {
-  background-color: rgba(0, 0, 0, 0.95);
-}
-
-/* for the mouse animation */
 .icon-scroll,
 .icon-scroll:before {
   position: absolute;
@@ -46,7 +24,7 @@
   border-radius: 25px;
 }
 .icon-scroll:before {
-  content: '';
+  content: "";
   width: 8px;
   height: 8px;
   background: #fff;
@@ -159,7 +137,7 @@
 .wrapper span {
   position: absolute;
   top: 75px;
-  font-family: 'Lato';
+  font-family: "Lato";
   font-size: 20px;
   letter-spacing: 12px;
   color: #fff;
@@ -168,4 +146,47 @@
 
 #page-wrapper {
   display: none;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #00796b;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #000;
+}
+
+.cc-window {
+  position: fixed;
+  bottom: 0;
+  padding: 30px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.cc-btn {
+  margin-top: 10px;
+  padding: 4px 10px;
+  float: right;
+}
+
+.cc-link {
+  color: rgb(99, 99, 221) !important;
 }
