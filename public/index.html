@@ -34,40 +34,42 @@
                     "initial";
             }
             function renderNotification() {
-                window.cookieconsent.initialise({
-                    container: document.getElementById("content"),
-                    palette: {
-                        popup: { background: "#fefefe" },
-                        button: { background: "#00796b" },
-                    },
-                    revokable: true,
-                    onStatusChange: function (status) {
-                        console.log(
-                            this.hasConsented()
-                                ? "enable cookies"
-                                : "disable cookies"
-                        );
-                    },
-                    law: {
-                        regionalLaw: false,
-                    },
-                    location: true,
-                    content: {
-                        header: "Cookie Policy",
-                        message:
-                            "We use cookies to enhance your experience on this website. If you want to know more about our cookie policy, ",
-                        dismiss: "Understood",
-                        allow: "Allow cookies",
-                        deny: "Decline",
-                        link: "click here",
-                        href: "/privacypolicy",
-                        close: "&#x274c;",
-                        policy: "Cookie Policy",
-                        target: "_blank",
-                    },
-                });
+                if (getCookie("acceptCookies") == null) {
+                    window.cookieconsent.initialise({
+                        container: document.getElementById("content"),
+                        palette: {
+                            popup: { background: "#fefefe" },
+                            button: { background: "#00796b" },
+                        },
+                        cookie: {
+                            domain: "www.winnovations.in",
+                        },
+                        onStatusChange: function (status) {
+                            document.getElementsByClassName(
+                                "cc-window"
+                            )[0].style.display = "none";
+                            setCookie("acceptCookies", true, 30);
+                        },
+                        law: {
+                            regionalLaw: true,
+                        },
+                        location: true,
+                        content: {
+                            header: "Cookie Policy",
+                            message:
+                                "We use cookies to enhance your experience on this website. If you want to know more about our cookie policy, ",
+                            dismiss: "Understood",
+                            allow: "Allow cookies",
+                            deny: "Decline",
+                            link: "click here",
+                            href: "/privacypolicy",
+                            close: "&#x274c;",
+                            policy: "Cookie Policy",
+                            target: "_blank",
+                        },
+                    });
+                }
             }
-
             function sendFormData() {
                 let valueOfEmail = document.getElementById("subscribeEmail")
                     .value;
@@ -82,6 +84,29 @@
                     document.getElementById("message").innerText =
                         "That is not a valid format";
                 }
+            }
+
+            function setCookie(cookieAccept, value, days) {
+                let expires = "";
+                if (days) {
+                    let date = new Date();
+                    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie =
+                    cookieAccept + "=" + (value || "") + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                let nameEQ = name + "=";
+                let ca = document.cookie.split(";");
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) == 0)
+                        return c.substring(nameEQ.length, c.length);
+                }
+                return null;
             }
 
             async function renderProblems() {
