@@ -34,8 +34,45 @@
                     "initial";
             }
             function renderNotification() {
-                console.log(getCookie("accepetCookies"));
-                if (getCookie("acceptCookies") == null) {
+                try {
+                    console.log(getCookie("accepetCookies"));
+                    if (getCookie("acceptCookies") == null) {
+                        window.cookieconsent.initialise({
+                            container: document.getElementById("content"),
+                            palette: {
+                                popup: { background: "#fefefe" },
+                                button: { background: "#00796b" },
+                            },
+                            cookie: {
+                                domain: "hackathonsewerage.herokuapp.com",
+                            },
+                            onStatusChange: function (status) {
+                                document.getElementsByClassName(
+                                    "cc-window"
+                                )[0].style.display = "none";
+                                setCookie("acceptCookies", true, 30);
+                            },
+                            law: {
+                                regionalLaw: true,
+                            },
+                            revokable: true,
+                            location: true,
+                            content: {
+                                header: "Cookie Policy",
+                                message:
+                                    "We use cookies to enhance your experience on this website. If you want to know more about our cookie policy, ",
+                                dismiss: "Understood",
+                                allow: "Allow cookies",
+                                deny: "Decline",
+                                link: "click here",
+                                href: "/privacypolicy",
+                                close: "&#x274c;",
+                                policy: "Cookie Policy",
+                                target: "_blank",
+                            },
+                        });
+                    }
+                } catch (err) {
                     window.cookieconsent.initialise({
                         container: document.getElementById("content"),
                         palette: {
