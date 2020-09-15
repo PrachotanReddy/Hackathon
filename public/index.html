@@ -34,6 +34,7 @@
                     "initial";
             }
             function renderNotification() {
+                console.log(getCookie("accepetCookies"));
                 if (getCookie("acceptCookies") == null) {
                     window.cookieconsent.initialise({
                         container: document.getElementById("content"),
@@ -53,6 +54,7 @@
                         law: {
                             regionalLaw: true,
                         },
+                        revokable: true,
                         location: true,
                         content: {
                             header: "Cookie Policy",
