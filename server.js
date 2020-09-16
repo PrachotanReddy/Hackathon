@@ -72,6 +72,7 @@ passport.use(
               password: "DoesNotApply",
               teamName: "remaining-submission-oauth",
               participationMode: "remaining-submission-oauth",
+              phone: "remaining-submission-oauth",
               teamMembers: [],
               problemStatement: "",
               score: 0,
@@ -119,6 +120,7 @@ passport.use(
               participationMode: "remaining-submission-oauth",
               teamMembers: [],
               problemStatement: "",
+              phone: "remaining-submission-oauth",
               score: 0,
               submission: "",
               oAuthMethod: "github",
@@ -148,16 +150,46 @@ passport.use(
       clientID: process.env.LINKEDIN_KEY,
       clientSecret: process.env.LINKEDIN_SECRET,
       callbackURL: "http://localhost:3000/auth/linkedin/callback",
-      scope: ["r_emailaddress", "r_basicprofile"],
+      scope: ["r_emailaddress", "r_liteprofile"],
+      state: true,
     },
     (accessToken, refreshToken, profile, done) => {
       // asynchronous verification, for effect...
-      process.nextTick(function () {
-        // To keep the example simple, the user's LinkedIn profile is returned to
-        // represent the logged-in user. In a typical application, you would want
-        // to associate the LinkedIn account with a user record in your database,
-        // and return that user instead.
-        return done(null, profile);
+      process.nextTick(async () => {
+        await collectionLogin
+          .findOne({ email: profile.emails[0].value })
+          .then(async (user) => {
+            if (user) {
+              logger.signin(`${profile.emails[0].value} signed in`);
+              done(null, user);
+            } else {
+              await collectionLogin.insertOne({
+                email: profile.emails[0].value,
+                password: "DoesNotApply",
+                teamName: "remaining-submission-oauth",
+                participationMode: "remaining-submission-oauth",
+                phone: "remaining-submission-oauth",
+                teamMembers: [],
+                problemStatement: "",
+                score: 0,
+                submission: "",
+                oAuthMethod: "linkedin",
+                verified: true,
+              });
+              await collectionLogin
+                .findOne({ email: profile.emails[0].value })
+                .then(function (user) {
+                  logger.register(
+                    `${profile.emails[0].value} resistered in the database as a Linkedin signin`
+                  );
+                  logger.signin(`${profile.emails[0].value} signed in`);
+                  if (user) {
+                    done(null, user);
+                  }
+                });
+            }
+            return done(null, profile);
+          });
       });
     }
   )
@@ -244,6 +276,23 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
+app.get("/deletemyaccount", checkAuthenticated, (req, res) => {
+  res.render("deleteaccount");
+});
+
+app.get("/finallydelete", checkAuthenticated, (req, res) => {
+  let query = {
+    email: req.session.passport.user,
+  };
+  logger.deleteStream(`${req.session.passport.user} deleted thier profile`);
+  collectionLogin.deleteOne(query, function (err, obj) {
+    if (err) {
+      res.send("error");
+    }
+    req.session.destroy();
+    res.send("Your account has been deleted");
+  });
+});
 //create a route to send OTP mails and update the database for the same
 
 app.use("/verifiyotp", checkAuthenticated, require("./routes/verification"));
@@ -399,7 +448,7 @@ app.post("/addAdminNews", checkAuth, (req, res) => {
 });
 
 app.get("/deleteParticipant", checkAuth, (req, res) => {
-  var query = {
+  let query = {
     email: req.query.user,
   };
   collectionLogin.deleteOne(query, function (err, obj) {
@@ -516,11 +565,9 @@ app.delete("/logoutadmin", checkAuth, function (req, res) {
 //Login with linkedIN
 app.get(
   "/auth/linkedin",
-  passport.authenticate("linkedin", { state: "SOME STATE" }),
-  function (req, res) {
-    // The request will be redirected to LinkedIn for authentication, so this
-    // function will not be called.
-  }
+  passport.authenticate("linkedin", {
+    scope: ["r_emailaddress", "r_liteprofile"],
+  })
 );
 
 app.get(
@@ -598,6 +645,7 @@ app.post("/oauthadditional", (req, res) => {
           $set: {
             teamName: req.body.teamname,
             participationMode: req.body.participation,
+            phone: req.body.mobile,
           },
         };
         collectionLogin.updateOne(query, newValues, (err, res) => {
@@ -621,7 +669,8 @@ async function sendOTP(email) {
     to: email,
     subject: "Account verification",
     html: `<h1>Verify your account</h1>
-    <p>You signed in with the email address ${email} on our website www.winnovations.in just now. Enter the OTP to complete the process. If it was not you, you can safely ignore this mail. <span style="font-weight: bold">${pin}</span> is you OTP that you need to sign in with.</p>
+    <p>You signed in with the email address ${email} on our website www.winnovations.in just now. Enter the OTP to complete the process. If it was not you, you can safely ignore this mail.</p>
+    <h4>${pin}</h4>
     
     <p style="font-style: italic">-team Winnovations</p>`,
   };
@@ -629,6 +678,9 @@ async function sendOTP(email) {
     if (error) {
       throw error;
     }
+    logger.emailregister(
+      `Email sent to ${mailingOptions.to} after registration for the first time ${info.response}`
+    );
     console.log(info);
   });
   collectionOTP.insertOne({
@@ -654,6 +706,9 @@ async function resendOTP(email) {
     if (error) {
       throw error;
     }
+    logger.emailresend(
+      `OTP sent to ${mailingOptions.to} again ${info.response}`
+    );
     console.log(info);
   });
   collectionOTP.updateOne(
@@ -665,7 +720,7 @@ async function resendOTP(email) {
   );
 }
 
-app.get("/resendOTP", async (req, res) => {
+app.get("/resendOTP", checkAuthenticated, async (req, res) => {
   try {
     console.log("Resending OTP");
     let responseOTP = resendOTP(req.session.passport.user);
@@ -697,6 +752,7 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
           let hashedPassword = bcrypt.hashSync(req.body.password, 10);
           collectionLogin.insertOne({
             email: req.body.email,
+            phone: req.body.mobile,
             password: hashedPassword,
             teamName: req.body.name,
             participationMode: req.body.participation,

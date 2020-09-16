@@ -20,151 +20,15 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         />
+
+        <!-- <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
+        /> -->
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
         <link rel="stylesheet" href="./style/home.css" />
     </head>
     <body data-spy="scroll" data-target="#navbar" onload="removeLoader()">
-        <script>
-            function removeLoader() {
-                renderProblems();
-                renderNotification();
-                document.getElementById("loader").style.display = "none";
-                const vid = document.getElementById("water-video");
-                vid.playbackRate = 0.7;
-                document.getElementById("page-wrapper").style.display =
-                    "initial";
-            }
-            function renderNotification() {
-                try {
-                    console.log(getCookie("accepetCookies"));
-                    if (getCookie("acceptCookies") == null) {
-                        window.cookieconsent.initialise({
-                            container: document.getElementById("content"),
-                            palette: {
-                                popup: { background: "#fefefe" },
-                                button: { background: "#00796b" },
-                            },
-                            cookie: {
-                                domain: "hackathonsewerage.herokuapp.com",
-                            },
-                            onStatusChange: function (status) {
-                                document.getElementsByClassName(
-                                    "cc-window"
-                                )[0].style.display = "none";
-                                setCookie("acceptCookies", true, 30);
-                            },
-                            law: {
-                                regionalLaw: true,
-                            },
-                            revokable: true,
-                            location: true,
-                            content: {
-                                header: "Cookie Policy",
-                                message:
-                                    "We use cookies to enhance your experience on this website. If you want to know more about our cookie policy, ",
-                                dismiss: "Understood",
-                                allow: "Allow cookies",
-                                deny: "Decline",
-                                link: "click here",
-                                href: "/privacypolicy",
-                                close: "&#x274c;",
-                                policy: "Cookie Policy",
-                                target: "_blank",
-                            },
-                        });
-                    }
-                } catch (err) {
-                    window.cookieconsent.initialise({
-                        container: document.getElementById("content"),
-                        palette: {
-                            popup: { background: "#fefefe" },
-                            button: { background: "#00796b" },
-                        },
-                        cookie: {
-                            domain: "hackathonsewerage.herokuapp.com",
-                        },
-                        onStatusChange: function (status) {
-                            document.getElementsByClassName(
-                                "cc-window"
-                            )[0].style.display = "none";
-                            setCookie("acceptCookies", true, 30);
-                        },
-                        law: {
-                            regionalLaw: true,
-                        },
-                        revokable: true,
-                        location: true,
-                        content: {
-                            header: "Cookie Policy",
-                            message:
-                                "We use cookies to enhance your experience on this website. If you want to know more about our cookie policy, ",
-                            dismiss: "Understood",
-                            allow: "Allow cookies",
-                            deny: "Decline",
-                            link: "click here",
-                            href: "/privacypolicy",
-                            close: "&#x274c;",
-                            policy: "Cookie Policy",
-                            target: "_blank",
-                        },
-                    });
-                }
-            }
-            function sendFormData() {
-                let valueOfEmail = document.getElementById("subscribeEmail")
-                    .value;
-                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if (re.test(valueOfEmail)) {
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.open("GET", "/newsletter/" + valueOfEmail, true);
-                    xhttp.send();
-                    document.getElementById("message").innerText =
-                        "Added successfully";
-                } else {
-                    document.getElementById("message").innerText =
-                        "That is not a valid format";
-                }
-            }
-
-            function setCookie(cookieAccept, value, days) {
-                let expires = "";
-                if (days) {
-                    let date = new Date();
-                    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-                    expires = "; expires=" + date.toUTCString();
-                }
-                document.cookie =
-                    cookieAccept + "=" + (value || "") + expires + "; path=/";
-            }
-
-            function getCookie(name) {
-                let nameEQ = name + "=";
-                let ca = document.cookie.split(";");
-                for (let i = 0; i < ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) == " ") c = c.substring(1, c.length);
-                    if (c.indexOf(nameEQ) == 0)
-                        return c.substring(nameEQ.length, c.length);
-                }
-                return null;
-            }
-
-            async function renderProblems() {
-                document.getElementById("problem-placeholder").innerHTML = "";
-                axios.get("/problems").then((response) => {
-                    response.data.forEach((recievedData) => {
-                        let announceContent = ` <div class="card" style="background-color: #00796b">
-                                                              <div class="card-header text-light">${recievedData.heading}</div>
-                                                              <div class="card-body bg-white w-100">
-                                                                <p class="card-text">${recievedData.description}</p>
-                                                              </div>
-                                                            </div>`;
-                        document.getElementById(
-                            "problem-placeholder"
-                        ).innerHTML += announceContent;
-                    });
-                });
-            }
-        </script>
         <div
             class="loader-animation-holder"
             id="loader"
@@ -240,39 +104,102 @@
                     background-color: rgba(0, 0, 0, 0.3);
                 "
             >
+                <div
+                    id="consent"
+                    class="p-4 rounded position-fixed mb-1 mr-1"
+                    style="
+                        bottom: 0;
+                        right: 0;
+                        z-index: 10;
+                        background-color: rgb(214, 214, 214);
+                        display: none;
+                    "
+                >
+                    <h3 style="color: #00796b">Cookies Policy</h3>
+                    <p>
+                        We use cookies to make your exerience better, inluding
+                        not showing this dialog box everytime you visit the
+                        page. To know more
+                        <a href="/privacypolicy">click here</a>
+                    </p>
+                    <button
+                        class="btn btn-lg text-white"
+                        style="background-color: #00796b"
+                        onclick="setcookies()"
+                    >
+                        Understood!
+                    </button>
+                </div>
                 <div class="container">
                     <video muted autoplay loop id="water-video">
                         <source
-                            src="./resources/videoCover.mp4"
+                            src="./resources/bubbles.mp4"
                             type="video/mp4"
                         />
                     </video>
                 </div>
                 <h1
-                    class="text-center d-none d-lg-block animate__animated flash mb-0 pb-0"
+                    class="text-center d-none d-lg-block font-weight-bold mb-0 pb-0 animate__animated animate__backInDown"
                     style="color: #00796b; font-size: 10rem"
                 >
                     WINnovations
                 </h1>
                 <h1
-                    class="text-center d-none d-md-block d-lg-none animate__animated flash"
+                    class="text-center d-none d-md-block d-lg-none font-weight-bold animate__animated animate__backInDown"
                     style="color: #00796b; font-size: 6rem"
                 >
                     WINnovations
                 </h1>
                 <h1
-                    class="text-center d-md-none animate__animated flash"
+                    class="text-center d-md-none font-weight-bold animate__animated animate__backInDown"
                     style="color: #00796b"
                 >
                     WINnovations
                 </h1>
-                <h3 class="text-center text-white mt-0 pt-0">
+                <h3
+                    class="text-center text-white mt-0 pt-0 animate__animated animate__backInUp"
+                >
                     The Innovation Portal under the Smart Water Hub Initiative
                 </h3>
-                <h4 class="text-center" style="color: #00796b">
+                <h4
+                    class="text-center font-weight-bold animate__animated animate__pulse"
+                    style="color: #00796b"
+                >
                     Aspire <span class="text-white">|</span> Innovate
                     <span class="text-white">|</span> Accelerate
                 </h4>
+                <div class="d-flex flex-row mx-auto text-center">
+                    <form
+                        action="/getstarted#login"
+                        class="animate__animated animate__fadeInLeft"
+                    >
+                        <input
+                            style="
+                                background-color: #ffffff;
+                                color: #00796b;
+                                border-radius: 10px;
+                            "
+                            type="submit"
+                            class="btn btn-lg mr-2"
+                            value="Login"
+                        />
+                    </form>
+                    <form
+                        action="/getstarted#register"
+                        class="animate__animated animate__backInRight"
+                    >
+                        <input
+                            style="
+                                background-color: #ffffff;
+                                color: #00796b;
+                                border-radius: 10px;
+                            "
+                            type="submit"
+                            class="btn btn-lg ml-2"
+                            value="Register"
+                        />
+                    </form>
+                </div>
             </div>
             <div
                 class="d-flex flex-column bg-white justify-content-center pt-5"
@@ -284,7 +211,7 @@
                 >
                     <div
                         class="col-12 col-md-7 font-weight-light d-flex flex-column justify-content-center"
-                        f
+                        data-aos="zoom-in"
                         style="font-size: 1.2rem"
                     >
                         <h1
@@ -319,6 +246,7 @@
                         >
                             <img
                                 class="img-fluid"
+                                data-aos="zoom-in"
                                 src="./resources//worker.jpg"
                                 alt=""
                             />
@@ -345,7 +273,10 @@
                 </p>
                 <div class="container-fluid d-flex flex-row">
                     <div class="col-12 col-lg-8 d-flex flex-column">
-                        <div class="row flex-column flex-md-row mt-4">
+                        <div
+                            class="row flex-column flex-md-row mt-4"
+                            data-aos="zoom-out-right"
+                        >
                             <div class="col-12 col-md-2">
                                 <div
                                     class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
@@ -369,7 +300,10 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="row flex-column flex-md-row mt-4">
+                        <div
+                            class="row flex-column flex-md-row mt-4"
+                            data-aos="zoom-out-right"
+                        >
                             <div class="col-12 col-md-2">
                                 <div
                                     class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
@@ -396,7 +330,10 @@
                             </div>
                         </div>
 
-                        <div class="row flex-column flex-md-row mt-4">
+                        <div
+                            class="row flex-column flex-md-row mt-4"
+                            data-aos="zoom-out-right"
+                        >
                             <div class="col-12 col-md-2">
                                 <div
                                     class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
@@ -422,7 +359,10 @@
                             </div>
                         </div>
 
-                        <div class="row flex-column flex-md-row mt-4">
+                        <div
+                            class="row flex-column flex-md-row mt-4"
+                            data-aos="zoom-out-right"
+                        >
                             <div class="col-12 col-md-2">
                                 <div
                                     class="text-center text-white p-4 d-flex flex-column justify-content-center mx-auto mb-2 mb-md-0"
@@ -438,7 +378,7 @@
                             </div>
                             <div class="col-12 col-md-10 pl-3">
                                 <h3 class="text-center text-md-left">
-                                    Sit Back and get working on the next problem
+                                    Sit back and get working on the next problem
                                     statement
                                 </h3>
                                 <p class="text-center text-md-left">
@@ -488,11 +428,12 @@
                 >
                     Perks
                 </h2>
-                <p class="pl-2 pl-md-4 pb-0 mb-0">
-                    Your efforts don't go in vain.
-                </p>
+                <p class="pb-0 mb-0">Your efforts don't go in vain.</p>
                 <div class="row py-5">
-                    <div class="col-12 col-md-3 d-flex flex-column">
+                    <div
+                        class="col-12 col-md-3 d-flex flex-column"
+                        data-aos="zoom-in"
+                    >
                         <i
                             class="fas fa-landmark mx-auto mb-3"
                             style="color: #00796b; font-size: 5rem"
@@ -503,7 +444,10 @@
                         </p>
                     </div>
 
-                    <div class="col-12 col-md-3 d-flex flex-column">
+                    <div
+                        class="col-12 col-md-3 d-flex flex-column"
+                        data-aos="zoom-in"
+                    >
                         <i
                             class="fas fa-warehouse mx-auto mb-3"
                             style="color: #00796b; font-size: 5rem"
@@ -514,7 +458,10 @@
                         </p>
                     </div>
 
-                    <div class="col-12 col-md-3 d-flex flex-column">
+                    <div
+                        class="col-12 col-md-3 d-flex flex-column"
+                        data-aos="zoom-in"
+                    >
                         <i
                             class="fas fa-microchip mx-auto mb-3"
                             style="color: #00796b; font-size: 5rem"
@@ -525,7 +472,10 @@
                         </p>
                     </div>
 
-                    <div class="col-12 col-md-3 d-flex flex-column">
+                    <div
+                        class="col-12 col-md-3 d-flex flex-column"
+                        data-aos="zoom-in"
+                    >
                         <i
                             class="fas fa-gift mx-auto mb-3"
                             style="color: #00796b; font-size: 5rem"
@@ -644,6 +594,99 @@
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"
         ></script>
-        <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
+        </script>
+        <script>
+            function removeLoader() {
+                renderProblems();
+                document.getElementById("loader").style.display = "none";
+                const vid = document.getElementById("water-video");
+                vid.playbackRate = 0.7;
+                document.getElementById("page-wrapper").style.display =
+                    "initial";
+                console.log(typeof getCookie("cookieconsent_status"));
+                renderNotification();
+            }
+
+            function sendFormData() {
+                let valueOfEmail = document.getElementById("subscribeEmail")
+                    .value;
+                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if (re.test(valueOfEmail)) {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.open("GET", "/newsletter/" + valueOfEmail, true);
+                    xhttp.send();
+                    document.getElementById("message").innerText =
+                        "Added successfully";
+                } else {
+                    document.getElementById("message").innerText =
+                        "That is not a valid format";
+                }
+            }
+
+            function setcookies() {
+                document.getElementById("consent").style.display = "none";
+                setCookie("cookieconsent_status", true, 15);
+                console.log(document.cookie);
+            }
+
+            function renderNotification() {
+                if (
+                    getCookie("cookieconsent_status") === "true" ||
+                    getCookie("cookieconsent_status") === true
+                ) {
+                    console.log("Consent for cookies given");
+                } else {
+                    document.getElementById("consent").style.display =
+                        "initial";
+                }
+            }
+
+            function setCookie(cookieAccept, value, days) {
+                let expires = "";
+                if (days) {
+                    let date = new Date();
+                    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie =
+                    cookieAccept + "=" + (value || "") + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                let nameEQ = name + "=";
+                let ca = document.cookie.split(";");
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) == 0)
+                        return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
+            async function renderProblems() {
+                document.getElementById("problem-placeholder").innerHTML = "";
+                axios.get("/problems").then((response) => {
+                    response.data.forEach((recievedData) => {
+                        let announceContent = ` <div class="card" data-aos="flip-left" style="background-color: #00796b">
+                                                              <div class="card-header text-light">${recievedData.heading}</div>
+                                                              <div class="card-body bg-white w-100">
+                                                                <p class="card-text">${recievedData.description}</p>
+                                                                <div class="d-flex flex-row justify-content-center py-2 px-3 mx-auto" style="background-color: #00796b; width: fit-content; border-radius: 20px">
+                                                                    <i class="fas fa-file-pdf" style="font-size: 1.5rem; color: #fefefe;"></i>
+                                                                    <p class="ml-2 mb-0 pb-0" style="color: #fefefe">Download the file now</p>
+                                                                </div>
+                                                              </div>
+                                                            </div>`;
+                        document.getElementById(
+                            "problem-placeholder"
+                        ).innerHTML += announceContent;
+                    });
+                });
+            }
+        </script>
     </body>
 </html>

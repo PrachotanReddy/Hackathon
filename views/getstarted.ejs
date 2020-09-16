@@ -155,14 +155,7 @@
             class="flex-column justify-content-center h-full"
             id="signup-container"
           >
-            <h1 class="text-center font-weight-semi-bold text-white">
-              Register Now
-            </h1>
-            <form
-              action="/register"
-              method="POST"
-              class="w-400 mw-full mx-auto text-white"
-            >
+            <form action="/register" method="POST" class="mx-auto text-white">
               <div class="form-group px-10">
                 <label for="name" class="required">Team name</label>
                 <input
@@ -188,7 +181,21 @@
                 />
               </div>
               <div class="form-group px-10">
-                <label for="participation">Participation Mode</label>
+                <label for="mobileNumber" class="required">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="mobileNumber"
+                  placeholder="Phone"
+                  name="mobile"
+                  required="required"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group px-10">
+                <label for="participation" class="required"
+                  >Participation Mode</label
+                >
                 <select
                   class="form-control"
                   id="participation"

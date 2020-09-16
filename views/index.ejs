@@ -104,6 +104,12 @@
           </span>
           Dark Mode
         </a>
+        <a id="deletion-toggle" class="sidebar-link sidebar-link-with-icon" onclick="changeTab(this.id)">
+          <span class="sidebar-icon bg-danger text-dark rounded-circle">
+            <i class="fas fa-trash text-white" aria-hidden="true"></i>
+          </span>
+          Delete
+        </a>
       </div>
     </div>
 
@@ -172,6 +178,20 @@
 
         </div>
 
+      </div>
+        <div id="deletion" class="container displayCardInformation" style="height: 100%;width: 100%;">
+          <div class="text-center card">
+            <h3 class="font-weight-bold">Delete Account</h3>
+                          <div class="dropdown dropup">
+                <button class="btn bg-secondary" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-trash mr-5" aria-hidden="true"></i> Delete my account
+                </button>
+                <div class="dropdown-menu text-center" aria-labelledby="confirm">
+                  <p class="px-10 py-8">Are you sure you want to delete your account? Everything you've worked till now will be deleted.</p>
+                  <button class="btn bg-danger" onclick="window.location.replace('/deletemyaccount')">Yes, delete!</button>
+                </div>
+              </div>
+          </div>
       </div>
       <div id="teamconfirm" class="container displayCardInformation" style="height: 100%;width: 100%;">
         <div class="card rounded">
