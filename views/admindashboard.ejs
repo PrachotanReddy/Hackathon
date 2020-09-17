@@ -156,7 +156,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="descriptionps" class="required">Description</label>
-                                    <textarea class="form-control" name="description" id="descriptionps" placeholder="Write a short description." required></textarea>
+                                    <textarea class="form-control" name="description" id="descriptionps" placeholder="Write a short description" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="urlfile" class="required">File URL</label>
+                                    <input type="url" class="form-control" name="link" id="urlfile" placeholder="Enter the file URL" required="required">
                                 </div>
                                 <div class="text-center">
                                     <input class="btn btn-primary" type="submit" value="Submit">
@@ -177,6 +181,9 @@
                                         <p class="text-muted">
                                             <%= item.description %>
                                         </p>
+                                        <a href="<%= item.link %>" target="_blank">
+                                        <i class="fas fa-file-pdf mr-5"></i> Download
+                                        </a>
                                         <div class="text-right"> <!-- text-right = text-align: right -->
                                             <button class="btn btn-danger" type="button" id="<%= item._id %>" onclick="deleteProblem(this.id)">Delete</button>
                                         </div>
