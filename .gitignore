@@ -1,2 +1,5 @@
 .env
 node_modules
+auth-routes
+package.json
+package-lock.json
